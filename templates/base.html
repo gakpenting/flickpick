@@ -1,0 +1,26 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - FlickPik</title>
+        {% else %}
+        <title>Welcome to FlickPik</title>
+        {% endif %}
+        <style type="text/css">
+            .black {background-color: white;}
+        </style>
+    </head>
+    <body>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+        
+    </body>
+</html>

@@ -1,0 +1,28 @@
+body {
+  background-color: white;
+}
+
+body {margin:0;}
+
+h1 {
+  color: #992533;
+  
+}
+h4 {
+  color: #992533;
+}
+
+h5 {
+  color: #992533;
+}
+
+
+p {
+  color: #992533;
+}
+select { 
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+}
+

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlickPik</title>
+</head>
+<body>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+<script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="static/css/guru.css">
+<meta name="description" content="Free Movie Suggestions">
+<meta name="keywords" content="Movie recommendations">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+    .abc {
+        float: left;
+        z-index: -1;
+
+    }
+    .xyz {
+        float: right;
+        z-index: -1;
+
+    }
+    .orange{
+        color: #992533;
+        font-size: 20px;
+    }
+    * {
+  box-sizing: border-box;
+}
+
+
+
+.nav {
+  height: 50px;
+  width: 100%;
+  background-color: #992533;
+  position: relative;
+}
+
+.nav > .nav-header {
+  display: inline;
+}
+
+.nav > .nav-header > .nav-title {
+  display: inline-block;
+  font-size: 22px;
+  color: white;
+  padding: 10px 10px 10px 10px;
+}
+
+.nav > .nav-btn {
+  display: none;
+}
+
+.nav > .nav-links {
+  display: inline;
+  float: right;
+  font-size: 18px;
+}
+
+.nav > .nav-links > a {
+  display: inline-block;
+  padding: 13px 10px 13px 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.nav > .nav-links > a:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav > #nav-check {
+  display: none;
+}
+
+@media (max-width:600px) {
+  .nav > .nav-btn {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .nav > .nav-btn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .nav > .nav-btn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #eee;
+  }
+  .nav > .nav-links {
+    position: absolute;
+    display: block;
+    width: 100%;
+    background-color: #333;
+    height: 0px;
+    transition: all 0.3s ease-in;
+    overflow-y: hidden;
+    top: 50px;
+    left: 0px;
+  }
+  .nav > .nav-links > a {
+    display: block;
+    width: 100%;
+  }
+  .nav > #nav-check:not(:checked) ~ .nav-links {
+    height: 0px;
+  }
+  .nav > #nav-check:checked ~ .nav-links {
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+}
+
+
+
+</style> 
+</head>
+<div class="nav">
+  <input type="checkbox" id="nav-check">
+  <div class="nav-header">
+    <div class="nav-title">
+      FlickPik
+    </div>
+  </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  
+  <div class="nav-links">
+    <a class="orange" href="{{ url_for('user', username=current_user.username) }}">My Watchlist</a>   
+     <a class="orange" href="{{ url_for('logout') }}">Logout</a>
+  </div>
+</div>
+<body>
+<br><br>
+<br><br>
+<center>
+  <center>
+    <img src="static/images/slogo.png">
+    <br>
+    
+  </center>
+</center>
+<br>
+<center><h5>Explore Watchlists or recommend a movie to a FlickPikr!</h5></center>
+
+    <div id="app">
+      {% raw %}
+      
+      
+    <center>
+      <br>
+      <br>
+    </center>
+   <template>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10">
+
+        <br><br>
+        <div>
+</div>
+<table class="table table-hover">
+          <thead>
+            <tr> 
+              <th scope="col"><font color="#992533"><font color="#992533">We <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></font></th>
+              <th scope="col"><font color="#992533">Description</font></th>
+              <th scope="col"><font color="#992533"><center>Recommend</center></font></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(book, index) in books.slice().reverse()" :key="index">
+              <td>
+                <div>
+                <button @click="toggle_movie_table(index)">+</button>
+                <font color="#992533">{{ book.name }}</font>
+                <div v-if="tr_opened.includes(index)" class="mt-1">
+                  
+                  <br>
+
+                  <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
+                    <ul ><font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</font>></ul>
+                   
+                  </div>
+           
+                </div>
+                
+              </div></td>
+              <td><font color="#992533">{{ book.description }}</font></td>
+              <td><font color="#992533"><center><button v-on:click=toggle(index)>Suggest a movie for this watch list</button>
+                <br>
+                <br>
+                <input  v-model="book.movie_being_recommended" placeholder="movie name"class="hidden" v-if="opened.includes(index)">
+                <br>
+                <br>
+                <textarea v-model="book.recommend_description" placeholder="describe the movie (100 charachters or less)"class="hidden" v-if="opened.includes(index)"></textarea>
+                <br>
+                <br>
+                <button @click="recommend(index,book)" type="button" class="round_corners button hidden" v-if="opened.includes(index)">Submit
+  </button></center></font></td>
+              
+
+  
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+  </div>
+  </template>    {% endraw %}  
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script >
+const vm = new Vue({
+        el: '#app',
+        data: {
+            id:null,
+        book:null,
+        tr_opened: [],
+        opened: [],
+        seen: false,
+        books: []
+      },
+      methods: {
+         getBooks() {
+      const path = '/get_all_movies';
+      axios.get(path)
+        .then((res) => {
+          this.books = res.data.books;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
+    reset(book) {
+          book.movie_being_recommended = "";
+          book.recommend_description = "";
+          book.movie_id = "";
+            },
+            toggle_movie_table(id) {
+    console.log(id);
+      const index = this.tr_opened.indexOf(id);
+      if (index > -1) {
+        this.tr_opened.splice(index, 1)
+        console.log(this.tr_opened);
+      } else {
+        this.tr_opened.push(id)
+        console.log(this.tr_opened);
+      }
+    },
+    recommend(index,book) {
+      console.log("recommend clicked");
+      console.log(index)
+      console.log(book.movie_being_recommended)
+      console.log(book.recommend_description)
+      var current_user_id = "{{ current_user.username }}";
+      movie = {movie_recommendation:book.movie_being_recommended, movie_description: book.recommend_description, recommender_name:current_user_id , movie_id: book.id }
+      //song.loggedInUser = localStorage.user
+      axios.post("/recommend_movie", movie ).then(this.getBooks()).then(this.reset(book));
+     // this.$router.push('/for-you')
+    },
+    toggle(id) {
+        console.log("pressed");
+        console.log(id);
+       
+         console.log(this.opened);
+         
+      const index = this.opened.indexOf(id);
+      if (index > -1) { 
+        this.opened.splice(index, 1);
+      } else {
+        this.opened.push(id) ;
+      }
+    },
+  },
+  created() {
+    this.getBooks();
+  },
+  mounted() {}
+      });
+  </script>
+
+

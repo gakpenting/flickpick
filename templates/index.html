@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlickPik</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+<script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="static/css/guru.css">
+<meta name="description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+<meta name="og:type" content="website">
+<meta name="og:description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+<meta name="keywords" content="Movie recommendations">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+ 
+</style>
+</head>
+<body>
+<html>
+<body>
+
+<br><br>
+<br><br>
+<center>
+  <center>
+    <img src="static/images/slogo.png">
+    <br>
+    <br>
+    <center><h5>View recommended movie lists or login to post your favorite movies and curate watch lists based on them!</h5></center>
+  </center>
+</center>
+<div id="app">
+  {% raw %}
+  <br>
+  <br>
+  <center>
+    <form v-if="seen" id="hide"  action="/login" method="POST">
+      <input type="text" id="email" name="email" placeholder="****@gmail.com" />
+      <input type="password" id="password" name="password" placeholder="*******" />
+      <br>
+      <button class="" id="submit" type="submit">Login</button>
+      <p>
+        <a href="/register">Sign Up!</a>
+      </p>
+    </form>
+    <button v-if="seen" v-on:click="seen = !seen" class="btn-danger" >-</button>
+    <button class="btn-danger" v-if="!seen" v-on:click="seen = !seen" > <font color="white">Sign Up or Login</font></button>
+    <br>
+    <br>
+    <center>
+      <select  v-model="selected_genre" @change="get_by_genre(genre)"> 
+        <option :value="null" disabled>Select Genre</option>
+        <option v-for="genre in genres" :key="genre" :value="genre">{{genre}}</option>
+      </select>
+    </center>
+    <br>
+    <br>
+    <table class="table" role="table">
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col"><font color="#992533">We <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></th>
+          <th scope="col"><font color="#992533">Description</font></th>
+          <th scope="col"><font color="#992533"><center>list size</center></font></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(book, index) in books.slice().reverse()" :key="index">
+          <td>
+            <div>
+              <button @click="toggle(index)" >+</button>
+              <font color="#992533">{{ book.name }}</font>
+              <div v-if="opened.includes(index)" class="mt-1">
+                <br>
+                <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
+                  <ul >
+                    <font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}
+                    </font>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td><font color="#992533">{{ book.description }}</font></td>
+          <td><font color="#992533"><center>{{ book.recommendation.length }}</center></font></td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+  {% endraw %}
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script >
+     var vm = new Vue({
+      el: '#app',
+      data:{
+        selected_genre: null,
+        opened: [],
+        genres: null,
+        seen: false,
+        books: [],
+    },
+      created() {
+    this.getBooks();
+    },
+      mounted(){
+      setTimeout(()=> this.genres = ["All","Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"], 0)
+    },
+    methods:{
+      get_by_genre() {  
+      console.log(this.selected_genre);
+
+      if (this.selected_genre == "All") {
+
+        this.getBooks();
+
+      }
+      else {
+         axios.get('/get_by_genre',{
+      params : {genre:this.selected_genre}
+  }).then((res) => {
+          this.books = res.data.books;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+
+      }  
+},
+    getBooks() {
+      const path = '/get_all_movies';
+      axios.get(path)
+        .then((res) => {
+          this.books = res.data.books;
+          console.error(this.books);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
+    toggle(id) {
+    console.log(id);
+      const index = this.opened.indexOf(id);
+      if (index > -1) {
+        this.opened.splice(index, 1)
+        console.log(this.opened);
+      } else {
+        this.opened.push(id)
+        console.log(this.opened);
+      }
+    },
+    },
+}) 
+  </script>
+
+

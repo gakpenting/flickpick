@@ -1,0 +1,12 @@
+.center{
+	 padding-top: 5px;
+}
+.background {
+	 z-index: -99;
+}
+.navbar {
+  z-index: 99px;
+  float: right;
+}
+.xyz {float: right;}
+
