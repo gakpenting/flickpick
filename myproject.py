@@ -14,6 +14,8 @@ from sqlalchemy.orm import mapper
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 
+ 
+ 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
