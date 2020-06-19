@@ -1,0 +1,30 @@
+/*extra small device*/
+
+@media(max-width:575px) {
+
+    .logo {
+        text-align: center;
+    }
+
+    .menu_left {
+        text-align: center;
+
+    }
+
+    .rcmd {
+        font-size: 9px;
+    }
+
+    #add_part {
+        margin: 10px 0px;
+    }
+
+    #explorer_part {
+        padding: 20px 0px;
+    }
+
+    .slick-slide img {
+
+        width: 100%;
+    }
+}
