@@ -7,8 +7,14 @@
     <meta http-equiv="refresh" content="5" >
 
     <title>FlickPik</title> 
-    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='assets/images/icon.png')}}" />
-
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/guru.css">
+    <meta name="description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+    <meta name="og:type" content="website">
+    <meta name="og:description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+    <meta name="keywords" content="Movie recommendations">
+    <link rel="icon" type="image/x-icon" href="icon.png" />
     <link rel="stylesheet" href="{{url_for('static', filename='assets/css/all.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='assets/css/slick.css')}}">
@@ -33,13 +39,14 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="menu_left">
-                                <a href="#">Login</a>
-                                <button class="btn btn-danger">Signup</button>
+                                <a href="#form_part" class="signin_btn">Login</a>
+                                <a href="/register" class="btn btn-danger">Signup</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+           
         </div>
     </section>
 
@@ -84,8 +91,6 @@
     </section>
 
     <!-- ======= Hero Section End======= -->
-
-
     <!-- ======= instagram_part Section start======= -->
 
 
@@ -772,26 +777,27 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form_part">
+                    <div class="form_part" id="form_part">
                         <div class="pop_image">
                             <img src="{{url_for('static', filename='assets/images/popcorn.png')}}" alt="popcorn" class="img-fluid">
                             <p>View recommended movie lists or login to post your favorite movies and curate watch lists based on them!</p>
                         </div>
-                        <form>
+                        <form v-if="seen" id="hide" action="/login" method="POST">
                             <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Enter email address">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address">
 
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Enter password">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Enter password">
                             </div>
                             <p><a href="#">Forgot Password?</a></p>
                             <div class="button_submission">
-                                <a href="#" type="submit" class="form-control">login</a>
+                                <!-- <a href="#" type="submit" class="form-control">login</a> -->
+                                <button class="form-control" id="submit" type="submit">Login</button>
                                 <h5>or</h5>
                             </div>
                             <div class="sign_up">
-                                <a href="#" class="form-control">sign up</a>
+                                <a href="/register" class="form-control">sign up</a>
                             </div>
                         </form>
                     </div>
@@ -884,6 +890,74 @@
     <!-- <script src="{{url_for('static', filename='assets/js/modernizr.min.js')}}"></script> -->
     <script src="{{url_for('static', filename='assets/js/slick.min.js')}}"></script>
     <script src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script >
+       var vm = new Vue({
+        el: '#app',
+        data:{
+          selected_genre: null,
+          opened: [],
+          genres: null,
+          seen: false,
+          books: [],
+      },
+        created() {
+      this.getBooks();
+      },
+        mounted(){
+        setTimeout(()=> this.genres = ["All","Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"], 0)
+      },
+      methods:{
+        get_by_genre() {  
+        console.log(this.selected_genre);
+  
+        if (this.selected_genre == "All") {
+  
+          this.getBooks();
+  
+        }
+        else {
+           axios.get('/get_by_genre',{
+        params : {genre:this.selected_genre}
+    }).then((res) => {
+            this.books = res.data.books;
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+  
+        }  
+  },
+      getBooks() {
+        const path = '/get_all_movies';
+        axios.get(path)
+          .then((res) => {
+            this.books = res.data.books;
+            console.error(this.books);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+      },
+      toggle(id) {
+      console.log(id);
+        const index = this.opened.indexOf(id);
+        if (index > -1) {
+          this.opened.splice(index, 1)
+          console.log(this.opened);
+        } else {
+          this.opened.push(id)
+          console.log(this.opened);
+        }
+      },
+      },
+  }) 
+    </script>
+  
 </body>
 
 </html>

@@ -2,67 +2,75 @@
 
 {% block content %}
 <head>
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" /> -->
+    <link rel="icon" type="image/x-icon" href="icon.png" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/slick.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/responsive.css')}}">
     <style>
-    body{
-        background-color: white;
-
-    }
-
-   
-    .white{
-        background-color: white;
-        font-size: 24px;
-
-    }
-    .white{
-        background-color: white;
-        font-size: 24px;
-
-    }
-</style>
+        .form-group {
+            margin-bottom: -0.7rem;
+        }
+        .form_section{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
 </head>
-<a class="float-left back" href="/">Back</a>
-<br>
-<body>
+ 
+<body style="background: #fbfbfb">
+    <div class="col-12 text-center">
+        <a href="/">
+            <img src="static/images/slogo.png">
+        </a>
+        <br>
+        <br>
     
-    <center>
+        <h5> Sign Up </h5>
+     
+    </div>
+   
     
-    <img src="static/images/slogo.png">
-    <br>
-    <br>
-
-    <h4><font color="#992533">Sign Up</font></h4>
-    <br>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username(size=32,placeholder="username") }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.email(size=32,placeholder="email@gmail.com") }}<br>
-            {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password(size=32,placeholder="password*$%!@") }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password2(size=32,placeholder="password*$%!@") }}<br>
-            {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form></center>
+    <div class="col-12 form_section mt-5">
+        
+   
+        <div class="col-lg-4 col-sm-12 form_part">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.username(size=32,placeholder="username",class="form-control") }}<br>
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.email(size=32,placeholder="email@gmail.com",class="form-control") }}<br>
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.password(size=32,placeholder="password*$%!@",class="form-control") }}<br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.password2(size=32,placeholder="password*$%!@",class="form-control") }}<br>
+                    {% for error in form.password2.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="button_submission">
+                    {{ form.submit(class="form-control sign_btn") }}
+                </div>
+            </form>
+        </div> 
+       
+    </div>
 </body>
 
     

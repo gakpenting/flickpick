@@ -60,7 +60,7 @@ ol {
     line-height: 100px;
 }
 
-.menu_left a {
+.menu_left .signin_btn {
     font-size: 15px;
     font-family: mm;
     text-transform: uppercase;
@@ -557,6 +557,26 @@ faqs-container {
 }
 
 .button_submission a {
+    text-align: center;
+    font-family: mm;
+    color: #CF1A28;
+    font-size: 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+}
+
+.button_submission button{
+    text-align: center;
+    font-family: mm;
+    color: #CF1A28;
+    font-size: 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+}
+
+.button_submission .sign_btn{
     text-align: center;
     font-family: mm;
     color: #CF1A28;
