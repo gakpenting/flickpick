@@ -586,6 +586,17 @@ faqs-container {
     border: 2px solid #CF1A28;
 }
 
+.button_submission .sign_btn:hover{
+    text-align: center;
+    font-family: mm;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 20px;
+    background:  #CF1A28;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+}
+
 .form-control {
     display: block;
     width: 100%;
