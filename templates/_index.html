@@ -7,150 +7,49 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
-<script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="static/css/guru.css">
 <meta name="description" content="Free Movie Suggestions">
 <meta name="keywords" content="Movie recommendations">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style type="text/css">
-    .abc {
-        float: left;
-        z-index: -1;
+<link rel="stylesheet" href="{{url_for('static', filename='assets/css/all.min.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}" >
+<link rel="stylesheet" href="{{url_for('static', filename='assets/css/slick.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='assets/css/style.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='assets/css/responsive.css')}}"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+ <style>
+   .navbar-brand{
+     font-size:22px;
+   }
+   .nav-link{
+     font-size: 18px;
+   }
+   .navbar-text{
+     padding:2px;
+     font-size: 16px;
+   }
+ </style>
 
-    }
-    .xyz {
-        float: right;
-        z-index: -1;
-
-    }
-    .orange{
-        color: #992533;
-        font-size: 20px;
-    }
-    * {
-  box-sizing: border-box;
-}
-
-
-
-.nav {
-  height: 50px;
-  width: 100%;
-  background-color: #992533;
-  position: relative;
-}
-
-.nav > .nav-header {
-  display: inline;
-}
-
-.nav > .nav-header > .nav-title {
-  display: inline-block;
-  font-size: 22px;
-  color: white;
-  padding: 10px 10px 10px 10px;
-}
-
-.nav > .nav-btn {
-  display: none;
-}
-
-.nav > .nav-links {
-  display: inline;
-  float: right;
-  font-size: 18px;
-}
-
-.nav > .nav-links > a {
-  display: inline-block;
-  padding: 13px 10px 13px 10px;
-  text-decoration: none;
-  color: white;
-}
-
-.nav > .nav-links > a:hover {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.nav > #nav-check {
-  display: none;
-}
-
-@media (max-width:600px) {
-  .nav > .nav-btn {
-    display: inline-block;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-  }
-  .nav > .nav-btn > label {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    padding: 13px;
-  }
-  .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-  .nav > .nav-btn > label > span {
-    display: block;
-    width: 25px;
-    height: 10px;
-    border-top: 2px solid #eee;
-  }
-  .nav > .nav-links {
-    position: absolute;
-    display: block;
-    width: 100%;
-    background-color: #333;
-    height: 0px;
-    transition: all 0.3s ease-in;
-    overflow-y: hidden;
-    top: 50px;
-    left: 0px;
-  }
-  .nav > .nav-links > a {
-    display: block;
-    width: 100%;
-  }
-  .nav > #nav-check:not(:checked) ~ .nav-links {
-    height: 0px;
-  }
-  .nav > #nav-check:checked ~ .nav-links {
-    height: calc(100vh - 50px);
-    overflow-y: auto;
-  }
-}
-
-
-
-</style> 
 </head>
-<div class="nav">
-  <input type="checkbox" id="nav-check">
-  <div class="nav-header">
-    <div class="nav-title">
-      FlickPik
-    </div>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <a class="navbar-brand" href="#">
+    FlickPik
+    </a>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}"><span><i class="fa fa-heart"> </i></span> My Watchlist</a>  
+      </li>
+    </ul>
   </div>
-  <div class="nav-btn">
-    <label for="nav-check">
-      <span></span>
-      <span></span>
-      <span></span>
-    </label>
-  </div>
-  
-  <div class="nav-links">
-    <a class="orange" href="{{ url_for('user', username=current_user.username) }}">My Watchlist</a>   
-     <a class="orange" href="{{ url_for('logout') }}">Logout</a>
-  </div>
-</div>
-<body>
+  <span class="navbar-text">
+  <a class="nav-link" href="{{ url_for('logout') }}"><span><i class="fa fa-sign-out"> </i></span> Logout</a>
+  </span>
+</nav>
+
 <br><br>
 <br><br>
 <center>
@@ -229,10 +128,34 @@
   </div>
   </template>    {% endraw %}  
   </div>
+
+  <section id="footer_part" class="mt-auto" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="social_icons">
+                    <ul>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                    </ul>
+                    <p>Copyright 2020 All rights reserved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <script src="{{url_for('static', filename='assets/js/jquery-1.12.4.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
+
+  <script src="{{url_for('static', filename='assets/js/bootstrap.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/modernizr.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/js/slick.min.js')}}"></script>
   <script src="https://unpkg.com/vue"></script>
-        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-   <script >
+  <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script>
 const vm = new Vue({
         el: '#app',
         data: {

@@ -26,10 +26,13 @@
      padding:2px;
      font-size: 16px;
    }
+   #user_name{
+     font-family: cursive;
+   }
  </style>
 </head>
  
-
+<body class="d-flex flex-column min-vh-100">
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -37,121 +40,107 @@
     <a class="navbar-brand" href="#">
     FlickPik
     </a>
-
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
         <a class="nav-link" href="{{ url_for('explore') }}"><span><i class="fa fa-film"> </i></span> Movies <span class="sr-only">(current)</span></a>
       </li>
-     
-  
     </ul>
- 
   </div>
   <span class="navbar-text">
   <a class="nav-link" href="{{ url_for('logout') }}"><span><i class="fa fa-sign-out"> </i></span> Logout</a>
 
   </span>
 </nav>
+        
 
-        <br>
-        <br>
-<center >
-   <img src="{{ url_for('static',filename='images/slogo.png') }}">
-   <br>
-   <br>
-   <h1 id="user_name" v-model="user_name">{{ user.username }}</h1>
-   <br>
-   <center>
-    <br>
-     <table>
-        <tr>            
-            <td>
-            </td>
-        </tr>
-    </table>
-</center>
-<body>
-<br>
-<center>
-  <center>
-  </center>
-</center>
-    <div id="app">
-      {% raw %}
-      <br>
-      <div class="list" v-for="(drinks, index) in rom">
-    <center><button class="round_corners button" v-on:click=toggle(index)>{{ drinks.brand }}</button></center>
-  <div class="hidden" v-show="drinks.visible">
-  </div> 
-  <input type="hidden" id="username" v-model="username ">
+<div class="col-12 text-center mt-5">
+  <a href="/">
+    <img src="{{ url_for('static',filename='images/slogo.png') }}">
+
+  </a>
   <br>
-    <input id="movie_name" v-model="movie_name" placeholder="enter a movie name" class="hidden" v-show="drinks.visible">
-    <br>
-    <center><br> <textarea maxlength="100" id="movie_description" v-model="movie_description" placeholder="give a description! (100 characters or less)" class="hidden" v-show="drinks.visible"></textarea></center>  
-  </input> 
   <br>
-  </input>
-<select v-show="drinks.visible" id="movie_genre" class="hidden" v-model="movie_genre" >
-         <option disabled value="">Please select one</option>
-         <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
-     </select>
-<button @click="ask_for_recommendation" class="round_corners button hidden" v-show="drinks.visible">Submit
-  </button>
-  </div>
-    <center>
-      <br>
-   
-    </center>
-   <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-10">
-     
-       
-        <div>
+
+  <h1 id="user_name" v-model="user_name">{{ user.username }}</h1>
+
 </div>
-<table class="table table-hover">
-          <thead>
-            <tr> 
-              <th scope="col"><font color="#992533"><font color="#992533">I <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></font></th>
-              <th scope="col"><font color="#992533"><center>Replies</center></font></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(book, index) in books.movies.slice().reverse()" :key="index">
-              <td>
-                <div>
-                <button @click="toggle_movie_table(index)">+</button>
-                <font color="#992533">{{ book.name }}</font>
-                <div v-if="opened.includes(index)" class="mt-1">
-                  
-                  <br>
-
-                  <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
-                    <ul ><font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</font></ul>
-                   
-                  </div>
-
-                  <div v-if="recommendation.accepted == false" v-for="recommendation  in book.recommendation">
-                    <ul ><font color="#992533">{{recommendation.movie_title}}: {{recommendation.description}}</font>  <button @click="accept(recommendation)">accept</button>  <button @click="decline(recommendation)">reject</button></ul>
-                  </div>       
-                </div>
-               
-              </div></td>
-              
-              <td><font color="#992533"><center>{{book.recommendation.length}}</center></font> </td>
-              <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"></button></td>
-            </tr>
-          </tbody>
-        </table>
+    <div id="app" class="text-center">
+      {% raw %}
+      
+      <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+        <div class="d-flex justify-content-center">
+          <button class="round_corners button form-control col-md-4 col-sm-10" v-on:click=toggle(index)>{{ drinks.brand }}</button>  
+        </div>
+        <div class="hidden" v-show="drinks.visible">
+        </div> 
+        <input type="hidden" id="username" v-model="username " />
+        <div class="d-flex justify-content-center">
+          <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
+        </div>
+        <div class="d-flex justify-content-center"> 
+          <textarea maxlength="100" id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
+        </div>
+        <div class="d-flex justify-content-center">
+          <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
+            <option disabled value="">Please select one</option>
+            <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
+          </select>
+        </div>  
+        <div class="d-flex justify-content-center">
+          <button @click="ask_for_recommendation" class="form-control col-md-4 col-sm-10 mt-4 mb-4 round_corners button hidden" v-show="drinks.visible">Submit
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-  </template>    {% endraw %}  
+    
+    <template>
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-sm-10">
+            <div>
+        </div>
+        <table class="table table-hover">
+              <thead>
+                <tr> 
+                  <th scope="col"><font color="#992533"><font color="#992533">I <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></font></th>
+                  <th scope="col"><font color="#992533"><center>Replies</center></font></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(book, index) in books.movies.slice().reverse()" :key="index">
+                  <td>
+                    <div>
+                    <button @click="toggle_movie_table(index)">+</button>
+                    <font color="#992533">{{ book.name }}</font>
+                    <div v-if="opened.includes(index)" class="mt-1">
+                      <br>
+
+                      <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
+                        <ul ><font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</font></ul>
+                      
+                      </div>
+
+                      <div v-if="recommendation.accepted == false" v-for="recommendation  in book.recommendation">
+                        <ul ><font color="#992533">{{recommendation.movie_title}}: {{recommendation.description}}</font>  <button @click="accept(recommendation)">accept</button>  <button @click="decline(recommendation)">reject</button></ul>
+                      </div>       
+                    </div>
+                  
+                  </div>
+                </td>
+                  
+                  <td><font color="#992533"><center>{{book.recommendation.length}}</center></font> </td>
+                  <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </template>    
+  {% endraw %}  
   </div>
 
-  <section id="footer_part" class="mt-5" >
+  <section id="footer_part" class="mt-auto">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
