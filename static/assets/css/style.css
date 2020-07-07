@@ -594,6 +594,30 @@ faqs-container {
  
     margin: 10px;;
 }
+.suggest{
+    text-align: center;
+    /* font-family: mm; */
+    color: #fff;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    background:  #CF1A28;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+}
+ 
+.suggest:hover{
+    text-align: center;
+    /* font-family: mm; */
+    color: #CF1A28;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 6px;
+    background:  #f0eced;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+  
+}
 .reply_btn .accept:hover{
     text-align: center;
     font-family: mm;

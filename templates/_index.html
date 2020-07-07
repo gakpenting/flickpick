@@ -50,100 +50,90 @@
   </span>
 </nav>
 
-<br><br>
-<br><br>
-<center>
-  <center>
-    <img src="static/images/slogo.png">
-    <br>
-    
-  </center>
-</center>
-<br>
-<center><h5>Explore Watchlists or recommend a movie to a FlickPikr!</h5></center>
+<div class="col-12 text-center mt-5">
+  <a href="/">
+    <img src="{{ url_for('static',filename='images/slogo.png') }}">
+  </a>
+  <br>
+  <br>
 
-    <div id="app">
-      {% raw %}
-      
-    <center>
-      <br>
-      <br>
-    </center>
-   <template>
+  <h5>Explore Watchlists or recommend a movie to a FlickPikr!</h5>
+
+</div>
+
+
+<div id="app">
+  {% raw %}
+ 
+  <template>
   <div class="container">
     <div class="row">
       <div class="col-sm-10">
-
-        <br> 
         <div>
-</div>
-<table class="table table-hover">
-          <thead>
-            <tr> 
-              <th scope="col"><font color="#992533"><font color="#992533">We <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></font></th>
-              <th scope="col"><font color="#992533">Description</font></th>
-              <th scope="col"><font color="#992533"><center>Recommend</center></font></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(book, index) in books.slice().reverse()" :key="index">
-              <td>
-                <div>
-                <button @click="toggle_movie_table(index)">+</button>
-                <font color="#992533">{{ book.name }}</font>
-                <div v-if="tr_opened.includes(index)" class="mt-1">
-                  
-                  <br>
-
-                  <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
-                    <ul ><font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</font>></ul>
-                   
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="table table-hover">
+            <thead>
+              <tr> 
+                <th scope="col"><span class="reply_text">We <i class="fa fa-heart" style="font-size:22px;color:red"></i></th>
+                <th scope="col"><span class="reply_text">Description</span></th>
+                <th scope="col"><span class="reply_text"> Recommend </span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(book, index) in books.slice().reverse()" :key="index" style="height: 22px;">
+                <td >
+                  <div>
+                    <button @click="toggle_movie_table(index)" class="btn btn-default">
+                      <i class="fa fa-plus-circle"> {{ book.name }}</i>
+                    </button>
+                    
+                    <div v-if="tr_opened.includes(index)" class="mt-1">
+                      <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
+                        <ul><span class="reply_text">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</span></ul>
+                      </div>
+                    </div> 
                   </div>
-           
-                </div>
-                
-              </div></td>
-              <td><font color="#992533">{{ book.description }}</font></td>
-              <td><font color="#992533"><center><button v-on:click=toggle(index)>Suggest a movie for this watch list</button>
-                <br>
-                <br>
-                <input  v-model="book.movie_being_recommended" placeholder="movie name"class="hidden" v-if="opened.includes(index)">
-                <br>
-                <br>
-                <textarea v-model="book.recommend_description" placeholder="describe the movie (100 charachters or less)"class="hidden" v-if="opened.includes(index)"></textarea>
-                <br>
-                <br>
-                <button @click="recommend(index,book)" type="button" class="round_corners button hidden" v-if="opened.includes(index)">Submit
-  </button></center></font></td>
-              
-
-  
-             
-            </tr>
-          </tbody>
-        </table>
+                </td>
+                <td><span class="reply_text">{{ book.description }}</span></td>
+                <td>
+                  
+                  <button class="suggest" v-on:click=toggle(index) data-toggle="tooltop" title="Suggest a movie for this watch list"><i class="fa fa-comments-o"></i>  Suggest</button>
+                 
+                  <input v-model="book.movie_being_recommended" placeholder="movie name" class="mt-1 form-control hidden" v-if="opened.includes(index)">
+                 
+                  <textarea v-model="book.recommend_description" rows=4 placeholder="describe the movie (100 charachters or less)" class="mt-1 form-control hidden" v-if="opened.includes(index)"></textarea>
+                  
+                  <button @click="recommend(index,book)" type="button " class="btn btn-danger text-light form-control hidden mt-1" v-if="opened.includes(index)">Submit
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>       
+        </div>
       </div>
     </div>
     
   </div>
-  </template>    {% endraw %}  
-  </div>
+  </template>    
+  {% endraw %}    
+</div>
 
-  <section id="footer_part" class="mt-auto" >
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="social_icons">
-                    <ul>
-                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                    </ul>
-                    <p>Copyright 2020 All rights reserved</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<section id="footer_part" class="mt-auto" >
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="social_icons">
+                  <ul>
+                      <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                      <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                      <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                  </ul>
+                  <p>Copyright 2020 All rights reserved</p>
+              </div>
+          </div>
+      </div>  
+  </div>
 </section>
 
   <script src="{{url_for('static', filename='assets/js/jquery-1.12.4.min.js')}}"></script>

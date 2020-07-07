@@ -1,5 +1,9 @@
 /*extra small device*/
-
+@media(max-width:678px){
+    .reply_btn{
+        display:block!important;
+    }
+}
 @media(max-width:575px) {
 
     .logo {
