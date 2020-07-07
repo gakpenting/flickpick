@@ -5,12 +5,31 @@
         {% else %}
         <title>Welcome to FlickPik</title>
         {% endif %}
+        <link rel="icon" type="image/x-icon" href="icon.png" />
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/slick.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/style.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='assets/css/responsive.css')}}">
         <style type="text/css">
             .black {background-color: white;}
+      
+            .form-group {
+                margin-bottom: -0.7rem;
+            }
+            .form_section{
+                display: flex;
+                justify-content: center;
+            }
+         
+            #footer_part{
+                margin-top:7.6%;
+            }
         </style>
     </head>
     <body>
-        <hr>
+       
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
