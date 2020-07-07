@@ -69,9 +69,10 @@
       {% raw %}
       
       <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
-        <div class="d-flex justify-content-center">
-          <button class="round_corners button form-control col-md-4 col-sm-10" v-on:click=toggle(index)>{{ drinks.brand }}</button>  
+        <div class="d-flex justify-content-center post_btn">
+          <button class="form-control col-md-4 col-sm-10" v-on:click=toggle(index)>{{ drinks.brand }}</button>  
         </div>
+
         <div class="hidden" v-show="drinks.visible">
         </div> 
         <input type="hidden" id="username" v-model="username " />
@@ -79,7 +80,7 @@
           <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
         </div>
         <div class="d-flex justify-content-center"> 
-          <textarea maxlength="100" id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
+          <textarea maxlength="100" rows=4 id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
         </div>
         <div class="d-flex justify-content-center">
           <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
@@ -87,8 +88,8 @@
             <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
           </select>
         </div>  
-        <div class="d-flex justify-content-center">
-          <button @click="ask_for_recommendation" class="form-control col-md-4 col-sm-10 mt-4 mb-4 round_corners button hidden" v-show="drinks.visible">Submit
+        <div class="d-flex justify-content-center post_btn ">
+          <button @click="ask_for_recommendation" class="col-md-4 col-sm-10 mt-4 mb-4  hidden" v-show="drinks.visible">Submit
           </button>
         </div>
       </div>
@@ -102,34 +103,44 @@
         <table class="table table-hover">
               <thead>
                 <tr> 
-                  <th scope="col"><font color="#992533"><font color="#992533">I <i class="fa fa-heart" style="font-size:22px;color:red"></i></font></font></th>
-                  <th scope="col"><font color="#992533"><center>Replies</center></font></th>
+                  <th scope="col"> <i class="fa fa-heart" style="font-size:22px;color:red"></i></th>
+                  <th scope="col"><span class="reply_text">Replies</span></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(book, index) in books.movies.slice().reverse()" :key="index">
                   <td>
                     <div>
-                    <button @click="toggle_movie_table(index)">+</button>
-                    <font color="#992533">{{ book.name }}</font>
-                    <div v-if="opened.includes(index)" class="mt-1">
-                      <br>
-
+                    <button @click="toggle_movie_table(index)" class="btn btn-default">
+                      <i class="fa fa-plus-circle"> {{ book.name }}</i>
+                    </button>
+                     
+                    <div v-if="opened.includes(index)" class="mt-2">
+                  
                       <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
-                        <ul ><font color="#992533">&#11088;{{recommendation.movie_title}}: {{recommendation.description}}</font></ul>
+                        <ul >
+                          <span class="reply_text">&#11088; {{recommendation.movie_title}}: {{recommendation.description}}</span></ul>
                       
                       </div>
 
                       <div v-if="recommendation.accepted == false" v-for="recommendation  in book.recommendation">
-                        <ul ><font color="#992533">{{recommendation.movie_title}}: {{recommendation.description}}</font>  <button @click="accept(recommendation)">accept</button>  <button @click="decline(recommendation)">reject</button></ul>
+                        <ul  >
+                          <span class="reply_text">{{recommendation.movie_title}}: {{recommendation.description}}</span>
+                          <div class="reply_btn d-flex mt-2">
+                            <button class="accept form-control" @click="accept(recommendation)">accept</button>  
+                            <button class="reject form-control" @click="decline(recommendation)">reject</button>
+                          </div>
+                         
+                        </ul>
                       </div>       
                     </div>
                   
                   </div>
                 </td>
                   
-                  <td><font color="#992533"><center>{{book.recommendation.length}}</center></font> </td>
-                  <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"></button></td>
+                  <td><span class="reply_text"> {{book.recommendation.length}}</span> </td>
+                  <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
                 </tr>
               </tbody>
             </table>

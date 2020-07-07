@@ -5,6 +5,8 @@
         {% else %}
         <title>Welcome to FlickPik</title>
         {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
         <link rel="icon" type="image/x-icon" href="icon.png" />
         <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
         <link rel="stylesheet" href="{{url_for('static', filename='assets/css/all.min.css')}}">
@@ -26,7 +28,7 @@
              
         </style>
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
        
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -40,4 +42,13 @@
         {% block content %}{% endblock %}
         
     </body>
+    <script src="{{url_for('static', filename='assets/js/jquery-1.12.4.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
+
+    <script src="{{url_for('static', filename='assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/modernizr.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/slick.min.js')}}"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </html>

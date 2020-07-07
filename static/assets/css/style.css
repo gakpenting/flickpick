@@ -566,6 +566,73 @@ faqs-container {
     border: 2px solid #CF1A28;
 }
 
+.post_btn button{
+    text-align: center;
+    font-family: mm;
+    color: #CF1A28;
+    border-radius: 20px;
+    border: 2px solid #CF1A28;
+    height:40px;
+}
+.reply_btn .accept{
+    text-align: center;
+    font-family: mm;
+    color: #CF1A28;
+    border-radius: 20px;
+    border: 2px solid #CF1A28;
+    margin:10px;
+}
+.reply_btn .reject{
+    text-align: center;
+    font-family: mm;
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    border-radius: 20px;
+    background:  #c7bfc2;
+    text-transform: uppercase;
+    border: 2px solid #0c0a0a;
+ 
+    margin: 10px;;
+}
+.reply_btn .accept:hover{
+    text-align: center;
+    font-family: mm;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 20px;
+    background:  #CF1A28;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+  
+}
+.reply_btn .reject:hover{
+    text-align: center;
+    font-family: mm;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 20px;
+    background:  #020202;
+    text-transform: uppercase;
+    border: 2px solid #080808;
+
+}
+
+.reply_text{
+    color: #992533;
+}
+.post_btn button:hover{
+    text-align: center;
+    font-family: mm;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 20px;
+    background:  #CF1A28;
+    text-transform: uppercase;
+    border: 2px solid #CF1A28;
+    height:40px;
+
+}
+
 .button_submission button{
     text-align: center;
     font-family: mm;

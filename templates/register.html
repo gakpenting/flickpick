@@ -2,8 +2,6 @@
 
 {% block content %}
  
- 
-<body class="d-flex flex-column min-vh-100">
     <div class="col-12 text-center mt-5">
         <a href="/">
             <img src="static/images/slogo.png">
@@ -16,10 +14,8 @@
     </div>
    
     
-    <div class="col-12 form_section mt-5">
-        
-   
-        <div class="col-lg-4 col-sm-12 form_part">
+    <div class="col-12 form_section mt-4">
+        <div class="col-lg-4 col-sm-12  ">
             <form action="" method="post">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -46,7 +42,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </div>
-                <div class="button_submission">
+                <div class="button_submission mt-3">
                     {{ form.submit(class="form-control sign_btn") }}
                 </div>
             </form>
@@ -69,7 +65,7 @@
             </div>
         </div>
     </section>
-</body>
+ 
 
     
     
