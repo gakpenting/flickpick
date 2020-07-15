@@ -175,13 +175,13 @@ admin2642
                 <div class="col-lg-8">
                     <div class="movies_with_brief">
                         <div class="faqs-container">
-                            <div class="faq">
+                            <div class="faq" :ref="'a'+index" v-for="(a,index) in books">
                                 <div class="movie_image">
-                                    <img src="static/assets/images/e1.png" class="img-fluid" alt="">
+                                    <img :src="'/static/uploads/'+a.image" class="img-fluid" alt="">
                                 </div>
                                 <h3 class="faq-title">
-                                    Mulan
-                                    <p>Female warrior fights with honor in a male dominated society</p>
+                                    {% raw %}{{a.name}}{% endraw %}
+                                    <p>{% raw %}{{a.description}}{% endraw %}</p>
                                 </h3>
                                 <div class="faq-texts">
                                     <p>Curated by<a href="#">Clarke Gillebert</a></p>
@@ -233,262 +233,11 @@ admin2642
                                     <span>RECOMMENDATIONS</span>
                                 </div>
                                 <button class="faq-toggle">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <i class="fas fa-minus-circle"></i>
+                                    <i class="fas fa-plus-circle" @click="togglePlus(index)"></i>
+                                    <i class="fas fa-minus-circle" @click="toggleMinus(index)"></i>
                                 </button>
                             </div>
 
-                            <div class="faq">
-                                <div class="movie_image">
-                                    <img src="static/assets/images/e2.png" class="img-fluid" alt="">
-                                </div>
-                                <h3 class="faq-title">
-                                    Friday
-                                    <p>Female warrior fights with honor in a male dominated society</p>
-                                </h3>
-                                <div class="faq-texts">
-                                    <p>Curated by<a href="#">Clarke Gillebert</a></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="rcmd">
-                                    <span>RECOMMENDATIONS</span>
-                                </div>
-                                <button class="faq-toggle">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <i class="fas fa-minus-circle"></i>
-                                </button>
-                            </div>
-
-                            <div class="faq">
-                                <div class="movie_image">
-                                    <img src="static/assets/images/e3.png" class="img-fluid" alt="">
-                                </div>
-                                <h3 class="faq-title">
-                                    Fifty Shades Of Grey
-                                    <p>Female warrior fights with honor in a male dominated society</p>
-                                </h3>
-                                <div class="faq-texts">
-                                    <p>Curated by<a href="#">Clarke Gillebert</a></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="rcmd">
-                                    <span>RECOMMENDATIONS</span>
-                                </div>
-                                <button class="faq-toggle">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <i class="fas fa-minus-circle"></i>
-                                </button>
-                            </div>
-
-                            <div class="faq">
-                                <div class="movie_image">
-                                    <img src="static/assets/images/e4.png" class="img-fluid" alt="">
-                                </div>
-                                <h3 class="faq-title">
-                                    Fantastic Beasts
-                                    <p>Female warrior fights with honor in a male dominated society</p>
-                                </h3>
-                                <div class="faq-texts">
-                                    <p>Curated by<a href="#">Clarke Gillebert</a></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="rcmd">
-                                    <span>RECOMMENDATIONS</span>
-                                </div>
-                                <button class="faq-toggle">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <i class="fas fa-minus-circle"></i>
-                                </button>
-                            </div>
-
-                            <div class="faq">
-                                <div class="movie_image">
-                                    <img src="static/assets/images/e5.png" class="img-fluid" alt="">
-                                </div>
-                                <h3 class="faq-title">
-                                    John Wick Chapter:3
-                                    <p>Female warrior fights with honor in a male dominated society</p>
-                                </h3>
-                                <div class="faq-texts">
-                                    <p>Curated by<a href="#">Clarke Gillebert</a></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="rcmd">
-                                    <span>RECOMMENDATIONS</span>
-                                </div>
-                                <button class="faq-toggle">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <i class="fas fa-minus-circle"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -670,6 +419,15 @@ admin2642
           this.opened.push(id)
           console.log(this.opened);
         }
+      },
+      togglePlus(id) {
+        this.$refs['a'+id][0].setAttribute("class","faq active")
+      
+        
+      },
+      toggleMinus(id) {
+        this.$refs['a'+id][0].setAttribute("class","faq")
+        
       },
       },
   }) 

@@ -65,93 +65,98 @@
   <h1 id="user_name" v-model="user_name">{{ user.username }}</h1>
 
 </div>
+   
+
     <div id="app" class="text-center">
       {% raw %}
-      
-      <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
-        <div class="d-flex justify-content-center post_btn">
-          <button class="form-control col-md-4 col-sm-10" v-on:click=toggle(index)>{{ drinks.brand }}</button>  
-        </div>
+      <template>
+        <div>
+          <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+            <div class="d-flex justify-content-center post_btn">
+              <button class="form-control col-md-4 col-sm-10" v-on:click=toggle(index)>{{ drinks.brand }}</button>  
+            </div>
 
-        <div class="hidden" v-show="drinks.visible">
-        </div> 
-        <input type="hidden" id="username" v-model="username " />
-        <div class="d-flex justify-content-center">
-          <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
-        </div>
-        <div class="d-flex justify-content-center"> 
-          <textarea maxlength="100" rows=4 id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
-        </div>
-        <div class="d-flex justify-content-center">
-          <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
-            <option disabled value="">Please select one</option>
-            <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
-          </select>
-        </div>  
-        <div class="d-flex justify-content-center post_btn ">
-          <button @click="ask_for_recommendation" class="col-md-4 col-sm-10 mt-4 mb-4  hidden" v-show="drinks.visible">Submit
-          </button>
-        </div>
-      </div>
+            <div class="hidden" v-show="drinks.visible">
+            </div> 
+            <input type="hidden" id="username" v-model="username " />
+            <div class="d-flex justify-content-center">
+              <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
+            </div>
+            <div class="d-flex justify-content-center"> 
+              <textarea maxlength="100" rows=4 id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
+            </div>
+            <div class="d-flex justify-content-center">
+              <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
+                <option disabled value="">Please select one</option>
+                <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
+              </select>
+            </div> 
+            <div class="d-flex justify-content-center">
+              <input type="file" class="hidden form-control mt-3 col-md-4 col-sm-10" v-model="movie_image" id="movie_image" v-show="drinks.visible">
+            </div> 
+            <div class="d-flex justify-content-center post_btn ">
+              <button @click="ask_for_recommendation" class="col-md-4 col-sm-10 mt-4 mb-4  hidden" v-show="drinks.visible">Submit
+              </button>
+            </div>
+          </div>
     
-    <template>
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-sm-10">
-            <div>
-        </div>
-        <table class="table table-hover">
-              <thead>
-                <tr> 
-                  <th scope="col"> <i class="fa fa-heart" style="font-size:22px;color:red"></i></th>
-                  <th scope="col"><span class="reply_text">Replies</span></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(book, index) in books.movies.slice().reverse()" :key="index">
-                  <td>
-                    <div>
-                    <button @click="toggle_movie_table(index)" class="btn btn-default">
-                      <i class="fa fa-plus-circle"> {{ book.name }}</i>
-                    </button>
-                     
-                    <div v-if="opened.includes(index)" class="mt-2">
-                  
-                      <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
-                        <ul >
-                          <span class="reply_text">&#11088; {{recommendation.movie_title}}: {{recommendation.description}}</span></ul>
+          <div class="container mt-4">
+            <div class="row">
+              <div class="col-sm-10">
+                <div>
+            </div>
+            <table class="table table-hover">
+                  <thead>
+                    <tr> 
+                      <th scope="col"> <i class="fa fa-heart" style="font-size:22px;color:red"></i></th>
+                      <th scope="col"><span class="reply_text">Replies</span></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(book, index) in books.movies.slice().reverse()" :key="index">
+                      <td>
+                        <div>
+                        <button @click="toggle_movie_table(index)" class="btn btn-default">
+                          <i class="fa fa-plus-circle"> {{ book.name }}</i>
+                        </button>
+                        
+                        <div v-if="opened.includes(index)" class="mt-2">
+                      
+                          <div v-if="recommendation.accepted == true" v-for="recommendation in book.recommendation">
+                            <ul >
+                              <span class="reply_text">&#11088; {{recommendation.movie_title}}: {{recommendation.description}}</span></ul>
+                          
+                          </div>
+
+                          <div v-if="recommendation.accepted == false" v-for="recommendation  in book.recommendation">
+                            <ul>
+                              <span class="reply_text">{{recommendation.movie_title}}: {{recommendation.description}}</span>
+                              <div class="reply_btn d-flex mt-2">
+                                <button class="accept form-control" @click="accept(recommendation)">accept</button>  
+                                <button class="reject form-control" @click="decline(recommendation)">reject</button>
+                              </div>
+                            
+                            </ul>
+                          </div>       
+                        </div>
                       
                       </div>
-
-                      <div v-if="recommendation.accepted == false" v-for="recommendation  in book.recommendation">
-                        <ul  >
-                          <span class="reply_text">{{recommendation.movie_title}}: {{recommendation.description}}</span>
-                          <div class="reply_btn d-flex mt-2">
-                            <button class="accept form-control" @click="accept(recommendation)">accept</button>  
-                            <button class="reject form-control" @click="decline(recommendation)">reject</button>
-                          </div>
-                         
-                        </ul>
-                      </div>       
-                    </div>
-                  
-                  </div>
-                </td>
-                  
-                  <td><span class="reply_text"> {{book.recommendation.length}}</span> </td>
-                  <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                      
+                      <td><span class="reply_text"> {{book.recommendation.length}}</span> </td>
+                      <td><button v-on:click="delete_post(book.id)"  type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-  </template>    
+    </template>
   {% endraw %}  
   </div>
-
-  <section id="footer_part" class="mt-auto">
+   <section id="footer_part" class="mt-auto">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -183,7 +188,7 @@
 const vm = new Vue({
         el: '#app',
         data: {
-          user_name:"",movie_description:"", movie_genre:"", movie_name:"", opened: [], filters: null,
+          user_name:"",movie_description:"", movie_genre:"",movie_image:"", movie_name:"", opened: [], filters: null,
         artist: null,
         song: null,
         genre: null,
@@ -215,22 +220,31 @@ const vm = new Vue({
           });
           }
         },
-        ask_for_recommendation () {
+        async ask_for_recommendation () {
           console.log(this.movie_name);
           console.log(this.movie_description);
           console.log(this.movie_genre);
+          var temp_image = document.getElementById('movie_image').files[0]
+          console.log(this.movie_image);
           var current_user_id = "{{ current_user.username }}";
           console.log(current_user_id);
-          console.log(current_user_id);
-          axios.post("/ask_for_movie_recommendation", { 
-            movie_name: this.movie_name, 
-            movie_genre: this.movie_genre,
-            movie_description: this.movie_description, 
-            user_name: current_user_id}).then(
+          const formBody = new FormData()
+          formBody.append("movie_name", this.movie_name);
+          formBody.append("movie_genre", this.movie_genre);
+          formBody.append("movie_description", this.movie_description);
+          if(temp_image){
+            formBody.append("movie_image", temp_image);
+          }else{
+            formBody.append("movie_image", null);
+          }
+          
+          formBody.append("user_name", current_user_id);
+          try{
+            await axios.post("/ask_for_movie_recommendation", formBody)
             this.getBooks()
-            ).then(this.reset()).catch((error) => {
-        // Error 
-        if (error.response) {
+            this.reset()
+          }catch(error){
+            if (error.response) {
             /*
              * The request was made and the server responded with a
              * status code that falls out of the range of 2xx
@@ -250,7 +264,8 @@ const vm = new Vue({
             console.log('Error', error.message);
         }
         console.log(error.config);
-    });
+          }
+      
     },getBooks() {
       const path = '/get_my_movies';
       var current_user_id = "{{ current_user.username }}";
@@ -280,6 +295,7 @@ const vm = new Vue({
           this.movie_name = "";
           this.movie_description = "";
           this.movie_genre = "";
+          this.movie_image = "";
             },
             toggle_movie_table(id) {
     console.log(id);

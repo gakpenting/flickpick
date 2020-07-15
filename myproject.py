@@ -13,7 +13,18 @@ from sqlalchemy import event
 from sqlalchemy.orm import mapper
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import uuid
+import json
 
+
+# from tmdbv3api import TMDB
+# tmdb = TMDB()
+# tmdb.api_key = 'e98fa3586be9a1f4b77ad437cdef9490'
+# tmdb.language = 'en'
+# tmdb.debug = True
+# import tmdbsimple as tmdb
+# tmdb.API_KEY = 'e98fa3586be9a1f4b77ad437cdef9490'
  
  
 
@@ -48,9 +59,13 @@ def setup_schema(Base, session):
 	return setup_schema_fn
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
 app.config['SECRET_KEY'] = 'shadowfox'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static','uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 ma = Marshmallow()
@@ -76,20 +91,21 @@ class RecommendationSchema(ma.ModelSchema):
         fields = ('id','movie_title','recommended_by','recommender_id','description','accepted')
 
 class Movie(db.Model):
-    __searchable__ = ['genre']
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    username = db.Column(db.String(255))
-    description = db.Column(db.String(100))
-    genre = db.Column(db.String(50))
-    recommendation = db.relationship('Recommendation', backref="movies", cascade="all, delete-orphan" , lazy='dynamic')
+	__searchable__ = ['genre']
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(200))
+	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	username = db.Column(db.String(255))
+	description = db.Column(db.String(100))
+	genre = db.Column(db.String(50))
+	image = db.Column(db.String(50))
+	recommendation = db.relationship('Recommendation', backref="movies", cascade="all, delete-orphan" , lazy='dynamic')
 
 class MovieSchema(ma.ModelSchema):
     class Meta:
         model = Movie
-        fields = ("id","name","timestamp","username","description","genre","recommendation")
+        fields = ("id","name","timestamp","username","description","genre","image","recommendation")
     recommendation = ma.Nested(RecommendationSchema, many=True)
 
 
@@ -150,6 +166,7 @@ def load_user(user_id):
 
 @app.route("/")
 def hello():
+	# return 'sqlite:///' + os.path.join(basedir, 'app.db')
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -207,13 +224,19 @@ def user(username):
 
 @app.route('/ask_for_movie_recommendation', methods=['POST'])
 def ask_for_movie_recommendation():
-	post_data = request.get_json()
+	post_data = request.get_json() or request.form
 	mg = post_data['movie_genre']
 	mn = post_data['movie_name']
 	md = post_data['movie_description']
+	
+	mm = request.files['movie_image']
+	imagename=None
+	if mm.filename != '':
+		imagename = secure_filename(mm.filename)
+		mm.save(os.path.join(app.config['UPLOAD_FOLDER'], imagename))	
 	ui = post_data['user_name']
 	user = User.query.filter_by(username=ui).first()
-	post = Movie(name=mn, description=md, genre=mg, user_id=user.id, username=ui)
+	post = Movie(name=mn, description=md, genre=mg, image=imagename, user_id=user.id, username=ui)
 	db.session.add(post)
 	db.session.commit()
 	data = get_update_movies(ui)
@@ -314,4 +337,5 @@ def unauthorized():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+  db.create_all()
+  app.run(debug=True,host='0.0.0.0')
