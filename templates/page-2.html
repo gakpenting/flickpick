@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <meta http-equiv="refresh" content="5" > -->
+    <meta name="description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+    <meta name="og:type" content="website">
+    <meta name="og:description" content="Welcome to FlickPik! The go to destination for movie lovers seeking recommendations on what to watch next. Need a flick? We've got your pick!">
+    <meta name="keywords" content="Movie recommendations">
+
+    <title>FlickPik</title> 
+    <link rel="stylesheet" href="/static/assets/css/all.min.css">
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/slick.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <link rel="stylesheet" href="/static/assets/css/responsive.css">   
+</head>
+
+<body style="background: #fbfbfb">
+    <div id="app">
+
+    <!-- ======= header Section Start======= -->
+    <section id="menu_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="logo">
+                                <img src="/static/assets/images/logo.png" alt="logo" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="menu_left">
+                                <a  class="signin_btn">Explore</a>
+                                <a href="/register" class="btn btn-danger">S</a>
+                                <a class="signin_btn" href="{{ url_for('logout') }}"><span><i class="fa fa-sign-out"> </i></span> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </section>
+
+    <!-- ======= banner Section Start======= -->
+    <section >
+        <div class="hero-container">
+            <div id="heroCarousel" >
+                
+                <div  style="background-image: url(/static/assets/images/banner_image.png);">
+
+                    <!-- Slide 1 -->
+                    <div >
+                        <div >
+                            <div style="height:40em;">
+                                <h2 class="d-flex justify-content-center" style="color: #fff;
+                                margin-bottom: 30px;
+                                font-size: 50px;
+                                font-family: ms;
+                                text-transform: capitalize;">Hey {{current_user.username}}</h2>
+                                
+                                {% raw %}
+                                <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+                                    <div class="d-flex justify-content-center post_btn">
+                                        <a  class="btn btn-danger" style="color:white;z-index: 9999;" v-on:click="toggle(index)">Create A New Movie List </a>
+                                      
+                                    </div>
+                        
+                                    <div class="hidden" v-show="drinks.visible">
+                                    </div> 
+                                    <input type="hidden" id="username" v-model="username " />
+                                    <div class="d-flex justify-content-center">
+                                      <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
+                                    </div>
+                                    <div class="d-flex justify-content-center"> 
+                                      <textarea maxlength="100" rows=4 id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                      <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
+                                        <option disabled value="">Please select one</option>
+                                        <option v-for="item in filters" v-model="movie_genre" :value="item">{{item}}</option>
+                                      </select>
+                                    </div> 
+                                    <div class="d-flex justify-content-center">
+                                      <input type="file" class="hidden form-control mt-3 col-md-4 col-sm-10" v-model="movie_image" id="movie_image" v-show="drinks.visible">
+                                    </div> 
+                                    <div class="d-flex justify-content-center post_btn ">
+                                      <button @click="ask_for_recommendation" class="col-md-4 col-sm-10 mt-4 mb-4  hidden" v-show="drinks.visible">Submit
+                                      </button>
+                                    </div>
+                                  </div>
+                                  {% endraw %}
+                            </div>
+                        </div>
+                    </div>
+ 
+                </div>
+
+              
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ======= Hero Section End======= -->
+
+    <!-- ======= instagram_part Section start======= -->
+    <section id="explorer_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% raw %}
+My Watchlist <select @change="get_by_genre" v-model="selected_genre"  id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" >
+    <option  value="All" selected>Genre</option>
+    <option v-for="item in filters"  :value="item">{{item}}</option>
+  </select>
+  {% endraw %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="movies_with_brief">
+                        <div class="faqs-container">
+                            <div class="faq" :ref="'a'+index" v-for="(a,index) in books">
+                                <div class="movie_image">
+                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                </div>
+                                <h3 class="faq-title">
+                                    {% raw %}{{a.name}}{% endraw %}
+                                    <p>{% raw %}{{a.description}}{% endraw %}</p>
+                                </h3>
+                                <div class="faq-texts">
+                                    <p>Curated by<a href="#">{% raw %}{{a.username}}{% endraw %}</a></p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6" v-for="b in a.recommendation">
+                                        <div class="faq-text">
+                                            <div class="card mb-3" style="max-width: 300px;">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-4">
+                                                        <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">{% raw %}{{b.movie_title}}{% endraw %}</h5>
+                                                            <h6 class="card-text">{% raw %}{{b.description}}{% endraw %}</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="end">
+                                                <p>Curated by<a href="#">{% raw %}{{b.recommended_by}}{% endraw %}</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                                <div class="rcmd">
+                                    <span style="color:grey;cursor:pointer;" @click="delete_post(a.id)">Delete movies</span>
+                                    <span>Replies</span>
+                                    <button  style="background-color: red;
+                                    border: none;
+                                    border-radius: 50%;
+                                    color: #fff;
+                                    cursor: pointer;
+                                      align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                    padding: 0;
+                                      height: 30px;
+                                    width: 30px;">
+                                        {%raw%}{{a.recommendation.length}}{%endraw%}
+                                        <!-- <i class="fas fa-minus-circle" @click="togglePlus(index)"></i>
+                                        <i class="fas fa-minus-circle" @click="toggleMinus(index)"></i> -->
+                                    </button>
+                                    <span style="font-size: 2em;cursor:pointer;display:contents;" :ref="'b'+index" @click="togglePlus(index)">+</span>
+                                    <span style="font-size: 2em;cursor:pointer;display:none;" :ref="'c'+index" @click="toggleMinus(index)">-</span>
+                                    
+                                </div>
+                                                            
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+         
+
+
+            </div>
+        </div>
+    </section>
+    <section id="add_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 m-auto">
+                    <div class="add_image">
+                        <img src="/static/assets/images/add.png" alt="add" width="100%" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="instagram_part" style="position:inherit;margin-bottom:20px;">
+        <div class="container">
+            <div class="row insta_slider">
+
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p2.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p3.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p4.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p5.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= instagram_part Section end======= -->
+
+    <!-- ======= ads_part Section start======= -->
+
+  
+    <!-- ======= add_part Section end======= -->
+
+    <!-- ======= explorer_part Section start======= -->
+
+    
+    <!-- ======= explorer_part Section end======= -->
+
+    <!-- ======= works_part Section start======= -->
+
+
+    <!-- ======= works_part Section start======= -->
+
+    <!-- ======= footer_part Section start======= -->
+
+    <section id="footer_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="social_icons">
+                        <ul>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                        <p>Copyright 2020 All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    <!-- ======= footer_part Section end======= -->
+
+    <script src="{{url_for('static', filename='assets/js/jquery-1.12.4.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
+
+    <script src="{{url_for('static', filename='assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/modernizr.min.js')}}"></script>
+    <script src="{{url_for('static', filename='assets/js/slick.min.js')}}"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script >
+       var vm = new Vue({
+        el: '#app',
+        data:{
+
+          selected_genre: "All",
+          opened: [],
+          genres: null,
+          seen: false,
+          books: [],
+          user_name:"",movie_description:"", movie_genre:"",movie_image:"", movie_name:"", opened: [], 
+          filters: ["Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"],
+        artist: null,
+        song: null,
+        genre: null,
+        username: null,
+        rom : [{
+          brand: 'Post an Awesome movie',
+          visible: false,
+          comment: 'drink1 - comment'
+        },
+        ],
+        seen: false,
+      },
+        created() {
+      this.getBooks();
+      },
+        mounted(){
+        setTimeout(()=> this.genres = ["All","Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"], 0)
+      },
+      methods:{
+        delete_post(movie_id){
+    console.log("delete post clicked");
+      console.log(movie_id);
+      if(confirm("are you sure you want to delete this watchlist?")){
+        axios.post("/delete_post/", {id:movie_id}).then(this.getBooks()
+         
+         );
+      }
+      
+      //this.$router.push('/songs');
+    },
+        async ask_for_recommendation () {
+          console.log(this.movie_name);
+          console.log(this.movie_description);
+          console.log(this.movie_genre);
+          var temp_image = document.getElementById('movie_image').files[0]
+          console.log(this.movie_image);
+          var current_user_id = "{{ current_user.username }}";
+          console.log(current_user_id);
+          const formBody = new FormData()
+          formBody.append("movie_name", this.movie_name);
+          formBody.append("movie_genre", this.movie_genre);
+          formBody.append("movie_description", this.movie_description);
+          if(temp_image){
+            formBody.append("movie_image", temp_image);
+          }else{
+            formBody.append("movie_image", null);
+          }
+          
+          formBody.append("user_name", current_user_id);
+          try{
+            await axios.post("/ask_for_movie_recommendation", formBody)
+            this.getBooks()
+            this.reset()
+          }catch(error){
+            if (error.response) {
+            /*
+             * The request was made and the server responded with a
+             * status code that falls out of the range of 2xx
+             */
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+            /*
+             * The request was made but no response was received, `error.request`
+             * is an instance of XMLHttpRequest in the browser and an instance
+             * of http.ClientRequest in Node.js
+             */
+            console.log(error.request);
+        } else {
+            // Something happened in setting up the request and triggered an Error
+            console.log('Error', error.message);
+        }
+        console.log(error.config);
+          }
+      
+    },
+        get_by_genre() {  
+        console.log(this.selected_genre);
+  
+        if (this.selected_genre == "All") {
+  
+          this.getBooks();
+  
+        }
+        else {
+           axios.get('/get_by_genre',{
+        params : {genre:this.selected_genre}
+    }).then((res) => {
+            this.books = res.data.books;
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+  
+        }  
+  },
+      getBooks() {
+        const path = '/get_all_movies?user_id={{ current_user.id }}';
+        axios.get(path)
+          .then((res) => {
+              this.books=[]
+            this.books = res.data.books;
+            console.error(this.books);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+      },
+      toggle(key) {
+              var vm = this;
+              if (!vm.rom[key].visible) {
+                vm.rom[key].visible = true;
+              } else  {
+                  vm.rom[key].visible = false;
+              }
+            },
+      togglePlus(id) {
+        this.$refs['b'+id][0].setAttribute("style","font-size: 2em;cursor:pointer;display:none;")
+        this.$refs['c'+id][0].setAttribute("style","font-size: 2em;cursor:pointer;display:contents;")
+        this.$refs['a'+id][0].setAttribute("class","faq active")
+      
+        
+      },
+      toggleMinus(id) {
+        this.$refs['b'+id][0].setAttribute("style","font-size: 2em;cursor:pointer;display:contents;")
+        this.$refs['c'+id][0].setAttribute("style","font-size: 2em;cursor:pointer;display:none;")
+        this.$refs['a'+id][0].setAttribute("class","faq")
+        
+      },
+      },
+  }) 
+    </script>
+  
+</body>
+
+</html>

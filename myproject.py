@@ -195,6 +195,25 @@ def login():
         login_user(user)
         return render_template('_index.html')
     return render_template('index.html')
+# @app.route('/user/<username>')
+# @login_required
+# def user(username):
+# 	user = User.query.filter_by(username=username).first_or_404()
+# 	return render_template('user.html', user=user)
+# @app.route('/explore')
+# @login_required
+# def explore():
+# 	return render_template("_index.html")
+@app.route('/user/<username>', methods=['GET'])
+@login_required
+def page2(username):	
+	user = User.query.filter_by(username=username).first_or_404()
+	return render_template('page-2.html', user=user)
+
+@app.route('/explore', methods=['GET'])
+@login_required
+def page3():	
+	return render_template('page-3.html')
 
 @app.route("/logout")
 @login_required
@@ -202,10 +221,7 @@ def logout():
     logout_user()
     return render_template('index.html')
 
-@app.route('/explore')
-@login_required
-def explore():
-	return render_template("_index.html")
+
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -216,11 +232,7 @@ def internal_error(error):
 	db.session.rollback()
 	return render_template('500.html'), 500
 
-@app.route('/user/<username>')
-@login_required
-def user(username):
-	user = User.query.filter_by(username=username).first_or_404()
-	return render_template('user.html', user=user)
+
 
 @app.route('/ask_for_movie_recommendation', methods=['POST'])
 def ask_for_movie_recommendation():
@@ -228,10 +240,11 @@ def ask_for_movie_recommendation():
 	mg = post_data['movie_genre']
 	mn = post_data['movie_name']
 	md = post_data['movie_description']
-	
-	mm = request.files['movie_image']
+	mm = None
+	if request.files:
+		mm = request.files['movie_image']
 	imagename=None
-	if mm.filename != '':
+	if mm:
 		imagename = secure_filename(mm.filename)
 		mm.save(os.path.join(app.config['UPLOAD_FOLDER'], imagename))	
 	ui = post_data['user_name']
@@ -297,6 +310,8 @@ def get_update_movies(user):
 def get_all_movies():
 	response_object = {'status': 'success'}
 	movi = Movie.query.all()
+	if request.args.get("user_id"):
+		movi=Movie.query.filter_by(user_id=request.args.get("user_id"))
 	rec = User.query.all()
 	rr = Recommendation.query.all()
 	movie_schema = MovieSchema(many=True)

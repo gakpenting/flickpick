@@ -184,49 +184,30 @@ admin2642
                                     <p>{% raw %}{{a.description}}{% endraw %}</p>
                                 </h3>
                                 <div class="faq-texts">
-                                    <p>Curated by<a href="#">Clarke Gillebert</a></p>
+                                    <p>Curated by<a href="#">{% raw %}{{a.username}}{% endraw %}</a></p>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" v-for="b in a.recommendation">
                                         <div class="faq-text">
                                             <div class="card mb-3" style="max-width: 300px;">
                                                 <div class="row no-gutters">
                                                     <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
+                                                        <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
+                                                            <h5 class="card-title">{% raw %}{{b.movie_title}}{% endraw %}</h5>
+                                                            <h6 class="card-text">{% raw %}{{b.description}}{% endraw %}</h6>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
+                                                <p>Curated by<a href="#">{% raw %}{{b.recommended_by}}{% endraw %}</a></p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="faq-text">
-                                            <div class="card mb-3" style="max-width: 300px;">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="static/assets/images/r1.png" class="img-fluid" alt="r1">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">Roll Bounce</h5>
-                                                            <h6 class="card-text">A skate team, competes for local bragging rights</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="end">
-                                                <p>Curated by<a href="#">Sampson Totton</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
 
                                 </div>
                                 <div class="rcmd">
