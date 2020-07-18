@@ -177,7 +177,7 @@ admin2642
                         <div class="faqs-container">
                             <div class="faq" :ref="'a'+index" v-for="(a,index) in books">
                                 <div class="movie_image">
-                                    <img :src="'/static/uploads/'+a.image" class="img-fluid" alt="">
+                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
                                 </div>
                                 <h3 class="faq-title">
                                     {% raw %}{{a.name}}{% endraw %}
