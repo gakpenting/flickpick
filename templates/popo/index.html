@@ -29,7 +29,7 @@
                         <div class="col-lg-6">
                             <div class="menu_left">
                                 <a href="#form_part" >Login</a>
-                                <button href="/register" class="btn btn-danger">Signup</button>
+                                <button onclick="window.location.href='/register'" class="btn btn-danger">Signup</button>
                             </div>
                         </div>
                     </div>
@@ -275,6 +275,10 @@
                         <div class="pop_image">
                             <img src="/static/assets/images/popcorn.png" alt="popcorn" class="img-fluid">
                             <p>View recommended movie lists or login to post your favorite movies and curate watch lists based on them!</p>
+                            {% if errorUser %}
+                            <p>{{errorUser}}</p>
+                            {% endif %}
+                            
                         </div>
                         <form action="/login" method="POST">
                             <div class="form-group">
@@ -292,7 +296,7 @@
                                 <h5>or</h5>
                             </div>
                             <div class="sign_up">
-                                <a href="#" class="form-control">sign up</a>
+                                <a href="/register" class="form-control">sign up</a>
                             </div>
                         </form>
                     </div>

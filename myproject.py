@@ -189,6 +189,8 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
+        if not user:
+            return render_template('popo/index.html',errorUser="wrong username or password")
         isValidPassword = user.check_password(password)
         if not isValidPassword:
              return render_template('popo/index.html')
