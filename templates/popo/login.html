@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/assets/css/all.min.css">
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/slick.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <link rel="stylesheet" href="/static/assets/css/responsive.css">
+</head>
+
+<body style="background: #fbfbfb">
+<div id=app>
+    <!-- ======= menu_part Section Start======= -->
+
+    <section id="menu_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="logo">
+                                <img src="/static/assets/images/logo-new.png" alt="logo" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="menu_left">
+                                <a href="#">MY WATCHLIST</a>
+                                <button class="btn btn-danger login_page_user"><i class="far fa-user"></i></button>&nbsp;&nbsp;<span><i class="fas fa-angle-down"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= menu_part Section Start======= -->
+
+
+    <!-- ======= menu_part Section Start======= -->
+
+
+    <!-- ======= Hero Section Start======= -->
+    <section id="hero">
+        <div class="hero-container">
+            <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+                <div class="carousel-inner" role="listbox">
+
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-content container">
+                                <h2 class="animated fadeInDown">Explore Watchlists or recommend <br> a movie to a FlickPikr</h2>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-content container">
+                                <h2 class="animated fadeInDown">Explore Watchlists or recommend <br> a movie to a FlickPikr</h2>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-container">
+                                <div class="carousel-content container">
+                                    <h2 class="animated fadeInDown">Explore Watchlists or recommend <br> a movie to a FlickPikr</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon icofont-rounded-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon icofont-rounded-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Hero Section End======= -->
+
+
+
+    <!-- ======= explorer_part Section start======= -->
+
+    <section id="explorer_part" class="explorer_part_login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="movies_with_brief login_brief">
+                        <h3 class="explore_h3">Explore
+                         <span> 
+                            {% raw %}
+                            <select @change="get_by_genre" v-model="selected_genre">
+                            <option style="color:black" :value="null">GENRE</option>
+                            <option style="color:black" v-for="item in filters"  :value="item">{{item}}</option>
+                            </select>
+                            {% endraw %}
+                        </span>
+                        </h3>
+                        <div class="faqs-container">
+                            <div class="faq" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
+                                <div class="movie_image">
+                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                </div>
+                                <h3 class="faq-title">
+                                    {% raw %}{{a.name}}{% endraw %}
+                                    <p>{% raw %}{{a.description}}{% endraw %}</p>
+                                </h3>
+                                <div class="faq-texts" style="display: block;">
+                                    <p>Curated by<a href="#">{% raw %}{{a.username}}{% endraw %}</a></p>
+                                </div>
+                                <div class="login_bottom_expanded">
+                                    <form class="row">
+                                        <div class="col-lg-4 col-md-6">
+                                                <input v-model="a.movie_being_recommended" type="text" placeholder="Enter movie name" name="" value="">
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                                <input v-model="a.recommend_description" type="text" placeholder="Describe the movie (100 characters or less)" name="" value="">
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <button @click="recommend(index,a)" type=button class="btn btn-danger">SUBMIT MY SUGGESTION</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="rcmd">
+                                    <span>SUGGEST MOVIE</span>
+                                </div>
+                                <button class="faq-toggle">
+
+                                    <i class="fas fa-plus" :ref="'b'+index"  @click="togglePlus(index)"></i>
+                                    <i class="fas fa-minus" :ref="'c'+index" @click="toggleMinus(index)"></i>
+                                </button>
+                            </div>
+
+
+                        </div>
+
+                        <pagination
+                        :max-visible-buttons="totalPages < 4 ? totalPages : 4"
+                        :total-pages="totalPages"
+                        :total="books.length"
+                        :per-page="5"
+                        :current-page="currentPage"
+                        @pagechanged="onPageChange"
+                      />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= explorer_part Section end======= -->
+
+
+ <!-- ======= add_part Section start======= -->
+
+    <section id="add_part" class="add_part_login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 m-auto">
+                    <div class="add_image">
+                        <img src="/static/assets/images/add.png" alt="add" width="100%" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= add_part Section end======= -->
+
+
+    <!-- ======= instagram_part Section start======= -->
+
+
+    <section id="instagram_part" style="top:0;margin-bottom: 50px;">
+        <div class="container">
+            <div class="row insta_slider">
+
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p2.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p3.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p4.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p5.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= instagram_part Section end======= -->
+
+    <!-- ======= footer_part Section start======= -->
+
+    <section id="footer_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="social_icons">
+                        <ul>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                        <p>Copyright 2020 All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- ======= footer_part Section end======= -->
+
+    <script src="/static/assets/js/jquery-1.12.4.min.js"></script>
+    <script src="/static/assets/js/bootstrap.min.js"></script>
+    <script src="/static/assets/js/modernizr.min.js"></script>
+    <script src="/static/assets/js/slick.min.js"></script>
+    <script src="/static/assets/js/custom.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/x-template" id="pagination">
+        <div class="pagination">
+            <ul>
+                 <li 
+                 
+                 @click="onClickPreviousPage"
+                 :class="isInFirstPage?'':'arrow_active'"
+                 ><i  class="fa fa-arrow-left"></i></li>
+                    <li v-for="page in pages" @click="clickPage(page.name)" :class="{ active_li: isPageActive(page.name) }">
+                        {% raw %}
+                        {{ page.name }}
+                        {% endraw %}</li>
+                    
+                    <li @click="onClickNextPage" :class="isInLastPage?'':'arrow_active'"><i class="fa fa-arrow-right"></i></li>
+            </ul>
+    </div>
+        
+       </script>
+    <script >
+         const Pagination = {
+  name: 'pagination',
+  template: '#pagination',
+    props: {
+    maxVisibleButtons: {
+      type: Number,
+      required: false,
+      default: 4
+    },
+    totalPages: {
+      type: Number,
+      required: true
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    perPage: {
+      type: Number,
+      required: true
+    },
+    currentPage: {
+      type: Number,
+      required: true
+    },
+  },
+  computed: {
+    startPage() {
+      if (this.currentPage === 1) {
+        return 1;
+      }
+
+      if (this.currentPage === this.totalPages) { 
+        return this.totalPages - this.maxVisibleButtons + 1;
+      }
+
+      return this.currentPage - 1;
+
+    },
+    endPage() {
+      console.log(Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages))
+      return Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
+      
+    },
+    pages() {
+      const range = [];
+console.log(this.startPage)
+      for (let i = this.startPage; i <= this.endPage; i+= 1 ) {
+        range.push({
+          name: i,
+          isDisabled: i === this.currentPage 
+        });
+      }
+
+      return range;
+    },
+    isInFirstPage() {
+      return this.currentPage === 1;
+    },
+    isInLastPage() {
+      return this.currentPage === this.totalPages;
+    },
+  },
+  methods: {
+      clickPage(page){
+        this.currentPage=page 
+        this.$emit('pagechanged', this.currentPage );
+      },
+    onClickFirstPage() {
+      this.$emit('pagechanged', 1);
+    },
+    onClickPreviousPage() {
+        if(!this.isInFirstPage){
+            this.$emit('pagechanged', this.currentPage - 1);
+        }
+      
+    },
+    onClickPage(page) {
+      this.$emit('pagechanged', page);
+    },
+    onClickNextPage() {
+        if(!this.isInLastPage){
+            this.$emit('pagechanged', this.currentPage + 1);
+        }
+      
+    },
+    onClickLastPage() {
+      this.$emit('pagechanged', this.totalPages);    
+    },
+    isPageActive(page) {
+      return this.currentPage === page;
+    },
+  }
+ };
+       var vm = new Vue({
+        el: '#app',
+        components: {
+    pagination: Pagination,
+  },
+        data:{
+            totalPages:null,
+            currentPage: 1,
+          selected_genre: null,
+          opened: [],
+          genres: null,
+          seen: false,
+          books: [],
+          user_name:"",movie_description:"", movie_genre:"",movie_image:"", movie_name:"", opened: [], 
+          filters: ["Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"],
+        artist: null,
+        song: null,
+        genre: null,
+        username: null,
+        rom : [{
+          brand: 'Post an Awesome movie',
+          visible: false,
+          comment: 'drink1 - comment'
+        },
+        ],
+        seen: false,
+       
+      },
+        created() {
+      this.getBooks();
+      },
+        
+      methods:{
+        onPageChange(page) {
+      console.log(page)
+      this.currentPage = page;
+    },
+        recommend(index,book) {
+     
+      var current_user_id = "{{ current_user.username }}";
+      movie = {movie_recommendation:book.movie_being_recommended, movie_description: book.recommend_description, recommender_name:current_user_id , movie_id: book.id }
+      //song.loggedInUser = localStorage.user
+      axios.post("/recommend_movie", movie ).then(this.getBooks()).then(this.reset(index,book));
+     // this.$router.push('/for-you')
+    },
+    reset(index,book) {
+          book.movie_being_recommended = "";
+          book.recommend_description = "";
+          book.movie_id = "";
+          alert("movie has been suggested")
+            },
+        get_by_genre() {  
+        console.log(this.selected_genre);
+  
+        if (!this.selected_genre) {
+  
+          this.getBooks();
+  
+        }
+        else {
+           axios.get('/get_by_genre',{
+        params : {genre:this.selected_genre}
+    }).then((res) => {
+            this.books = res.data.books;
+            this.totalPages=Math.ceil(this.books.length/5)
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+  
+        }  
+  },
+      getBooks() {
+        const path = '/get_all_movies';
+        axios.get(path)
+          .then((res) => {
+              this.books=[]
+            this.books = res.data.books;
+            this.totalPages=Math.ceil(this.books.length/5)
+            console.error(this.books);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+      },
+      toggle(key) {
+              var vm = this;
+              if (!vm.rom[key].visible) {
+                vm.rom[key].visible = true;
+              } else  {
+                  vm.rom[key].visible = false;
+              }
+            },
+      togglePlus(id) {
+        
+        this.$refs['a'+id][0].setAttribute("class","faq active")
+      
+        
+      },
+      toggleMinus(id) {
+        
+        this.$refs['a'+id][0].setAttribute("class","faq")
+        
+      },
+      },
+  }) 
+    </script>
+  
+</body>
+
+</html>

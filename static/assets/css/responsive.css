@@ -1,11 +1,47 @@
 /*extra small device*/
-@media(max-width:678px){
-    .reply_btn{
-        display:block!important;
+
+@media only screen and (max-width: 991px){
+    .pagination{
+        margin-bottom: 50px;
+    }
+}
+@media only screen and (min-width:768px) and (max-width: 991px){
+    .login_bottom_expanded button{
+        margin-top:12px;
+    }
+}
+@media only screen and (min-width:576px) and (max-width: 767px){
+    .container{
+        max-width: 720px;
+    }
+    .replies{
+    top: 32px;
+}
+}
+@media only screen and (max-width: 767px){
+    .movie_double_slider .fa-arrow-right{
+        right:25%;
+    }
+    .movie_double_slider .fa-arrow-left{
+        left:30%;
+    }
+    .login_bottom_expanded input{
+        margin:5px 0;
+    }
+    .login_bottom_expanded button{
+        margin-top:5px;
+    }
+    .login_bottom_expanded .row{
+        margin:0;
     }
 }
 @media(max-width:575px) {
-
+.replies{
+    top: 28px;
+}
+.trash_grey{
+    padding-right: 20px;
+}
     .logo {
         text-align: center;
     }
@@ -31,4 +67,9 @@
 
         width: 100%;
     }
+    .faq-toggle{
+        top:25px;
+    }
 }
+
+

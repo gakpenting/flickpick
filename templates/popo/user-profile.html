@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/assets/css/all.min.css">
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/slick.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <link rel="stylesheet" href="/static/assets/css/responsive.css">
+</head>
+
+<body style="background: #fbfbfb">
+<div id=app>
+    <!-- ======= menu_part Section Start======= -->
+
+    <section id="menu_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="logo">
+                                <img src="/static/assets/images/logo-new.png" alt="logo" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="menu_left">
+                                <a href="#">EXPLORE</a>
+                                <button class="btn btn-danger login_page_user"><i class="far fa-user"></i></button>&nbsp;&nbsp;<span><i class="fas fa-angle-down"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= menu_part Section Start======= -->
+
+
+    <!-- ======= menu_part Section Start======= -->
+
+
+    <!-- ======= Hero Section Start======= -->
+    <section id="hero">
+        <div class="hero-container">
+            <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+                <div class="carousel-inner" role="listbox">
+
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-content container">
+                                <h2 class="animated fadeInDown">Hey, {{current_user.username}}</h2>
+                                {% raw %}
+                                <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+                                    <div class="d-flex justify-content-center post_btn">
+                                        
+                                        <button v-on:click="toggle(index)" class="btn btn-danger list_btn">CURATE A NEW MOVIE LIST</button>      
+                                    </div>
+                        
+                                  </div>
+                                  {% endraw %}
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-content container">
+                                <h2 class="animated fadeInDown">Hey, {{current_user.username}}John</h2>
+                                {% raw %}
+                                <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+                                    <div class="d-flex justify-content-center post_btn">
+                                        
+                                        <button v-on:click="toggle(index)" class="btn btn-danger list_btn">CURATE A NEW MOVIE LIST</button>      
+                                    </div>
+                        
+                                    
+                                  </div>
+                                  {% endraw %}
+                                
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item" style="background-image: url('/static/assets/images/banner_image.png');">
+                        <div class="carousel-container">
+                            <div class="carousel-container">
+                                <div class="carousel-content container">
+                                    <h2 class="animated fadeInDown">Hey, {{current_user.username}}John</h2>
+                                    {% raw %}
+                                    <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+                                        <div class="d-flex justify-content-center post_btn">
+                                            
+                                            <button v-on:click="toggle(index)" class="btn btn-danger list_btn">CURATE A NEW MOVIE LIST</button>      
+                                        </div>
+                            
+                                      </div>
+                                      {% endraw %}
+                                    
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon icofont-rounded-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon icofont-rounded-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Hero Section End======= -->
+
+
+
+    <!-- ======= explorer_part Section start======= -->
+
+    <section id="explorer_part" class="explorer_part_login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="movies_with_brief login_brief">
+                        <h3 class="explore_h3">My Watchlist
+                         <span> 
+                            {% raw %}
+                            <select @change="get_by_genre" v-model="selected_genre">
+                            <option style="color:black" :value="null">GENRE</option>
+                            <option style="color:black" v-for="item in filters"  :value="item">{{item}}</option>
+                            </select>
+                            {% endraw %}
+                        </span>
+                        </h3>
+                        <div class="faqs-container">
+                            {% raw %}
+                            <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
+                                         
+                                <div class="hidden" v-show="drinks.visible">
+                                </div> 
+                                <input type="hidden" id="username" v-model="username " />
+                                <div class="d-flex justify-content-center">
+                                  <input id="movie_name" v-model="movie_name" placeholder="Enter a movie name" class="hidden form-control col-md-4 col-sm-10 mt-3" v-show="drinks.visible">
+                                </div>
+                                <div class="d-flex justify-content-center"> 
+                                  <textarea maxlength="100" rows=4 id="movie_description" v-model="movie_description" placeholder="Give a description! (100 characters or less)" class="hidden form-control mt-3 col-md-4 col-sm-10" v-show="drinks.visible"></textarea>  
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                  <select v-show="drinks.visible" id="movie_genre" class="form-control mt-3 hidden col-md-4 col-sm-10" v-model="movie_genre">
+                                    <option disabled value="">Please select one</option>
+                                    <option v-for="item in filters" :value="item">{{item}}</option>
+                                  </select>
+                                </div> 
+                                <div class="d-flex justify-content-center">
+                                  <input type="file" class="hidden form-control mt-3 col-md-4 col-sm-10"  id="movie_image" v-show="drinks.visible">
+                                </div> 
+                                <div class="d-flex justify-content-center post_btn ">
+                                    <button @click="ask_for_recommendation" class="btn btn-danger list_btn" v-show="drinks.visible">Submit</button>      
+                                  
+                                </div>
+                              </div>
+                              {% endraw %}
+                            <div class="faq active" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
+                                <div class="movie_image">
+                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                </div>
+                                <h3 class="faq-title">
+                                    {% raw %}{{a.name}}{% endraw %}
+                                    <p>{% raw %}{{a.description}}{% endraw %}</p>
+                                </h3>
+                                <div class="profile_bottom_expanded">
+                                    <div class="repeated_home_profile" v-for="b in a.recommendation">
+                                        <div class="star"><i class="fa fa-star"></i></div>
+                                        <h5>{% raw %}{{b.movie_title}}{% endraw %}</h5>
+                                        <p>{% raw %}{{b.description}}{% endraw %}</p>
+                                    </div>
+                                    
+
+                                </div>
+                                <div class="rcmd replies" style="color:#000;">
+                                    <span class="grey" style="cursor:pointer;" @click="delete_post(a.id)">DELETE MOVIE</span>
+                                    <span class="grey trash_grey"><i class="fa fa-trash-alt"></i></span>
+                                    <span>Replies</span>
+                                    <span><button class="btn btn-danger">{%raw%}{{a.recommendation.length}}{%endraw%}</button></span>
+                                </div>
+                                <button class="faq-toggle">
+
+                                    <i class="fas fa-plus" :ref="'b'+index" @click="togglePlus(index)"></i>
+                                    <i class="fas fa-minus" :ref="'c'+index" @click="toggleMinus(index)"></i>
+                                </button>
+                            </div>
+
+                          
+                        </div>
+                        <pagination
+                        :max-visible-buttons="totalPages < 4 ? totalPages : 4"
+                        :total-pages="totalPages"
+                        :total="books.length"
+                        :per-page="5"
+                        :current-page="currentPage"
+                        @pagechanged="onPageChange"
+                      />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= explorer_part Section end======= -->
+
+
+ <!-- ======= add_part Section start======= -->
+
+    <section id="add_part" class="add_part_login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 m-auto">
+                    <div class="add_image">
+                        <img src="/static/assets/images/add.png" alt="add" width="100%" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= add_part Section end======= -->
+
+
+    <!-- ======= instagram_part Section start======= -->
+
+
+    <section id="instagram_part" style="top:0;margin-bottom: 50px;">
+        <div class="container">
+            <div class="row insta_slider">
+
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p2.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p3.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p4.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p5.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="insta_picture">
+                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
+                        <div class="overlay">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <p><a href="#">See More</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= instagram_part Section end======= -->
+
+    <!-- ======= footer_part Section start======= -->
+
+    <section id="footer_part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="social_icons">
+                        <ul>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                        <p>Copyright 2020 All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= footer_part Section end======= -->
+</div>
+    <script src="/static/assets/js/jquery-1.12.4.min.js"></script>
+    <script src="/static/assets/js/bootstrap.min.js"></script>
+    <script src="/static/assets/js/modernizr.min.js"></script>
+    <script src="/static/assets/js/slick.min.js"></script>
+    <script src="/static/assets/js/custom.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/x-template" id="pagination">
+        <div class="pagination">
+            <ul>
+                 <li 
+                 
+                 @click="onClickPreviousPage"
+                 :class="isInFirstPage?'':'arrow_active'"
+                 ><i  class="fa fa-arrow-left"></i></li>
+                    <li v-for="page in pages" @click="clickPage(page.name)" :class="{ active_li: isPageActive(page.name) }">
+                        {% raw %}
+                        {{ page.name }}
+                        {% endraw %}</li>
+                    
+                    <li @click="onClickNextPage" :class="isInLastPage?'':'arrow_active'"><i class="fa fa-arrow-right"></i></li>
+            </ul>
+    </div>
+        
+       </script>
+    <script >
+           const Pagination = {
+  name: 'pagination',
+  template: '#pagination',
+    props: {
+    maxVisibleButtons: {
+      type: Number,
+      required: false,
+      default: 4
+    },
+    totalPages: {
+      type: Number,
+      required: true
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    perPage: {
+      type: Number,
+      required: true
+    },
+    currentPage: {
+      type: Number,
+      required: true
+    },
+  },
+  computed: {
+    startPage() {
+      if (this.currentPage === 1) {
+        return 1;
+      }
+
+      if (this.currentPage === this.totalPages) { 
+        return this.totalPages - this.maxVisibleButtons + 1;
+      }
+
+      return this.currentPage - 1;
+
+    },
+    endPage() {
+      console.log(Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages))
+      return Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
+      
+    },
+    pages() {
+      const range = [];
+console.log(this.startPage)
+      for (let i = this.startPage; i <= this.endPage; i+= 1 ) {
+        range.push({
+          name: i,
+          isDisabled: i === this.currentPage 
+        });
+      }
+
+      return range;
+    },
+    isInFirstPage() {
+      return this.currentPage === 1;
+    },
+    isInLastPage() {
+      return this.currentPage === this.totalPages;
+    },
+  },
+  methods: {
+      clickPage(page){
+        this.currentPage=page 
+        this.$emit('pagechanged', this.currentPage );
+      },
+    onClickFirstPage() {
+      this.$emit('pagechanged', 1);
+    },
+    onClickPreviousPage() {
+        if(!this.isInFirstPage){
+            this.$emit('pagechanged', this.currentPage - 1);
+        }
+      
+    },
+    onClickPage(page) {
+      this.$emit('pagechanged', page);
+    },
+    onClickNextPage() {
+        if(!this.isInLastPage){
+            this.$emit('pagechanged', this.currentPage + 1);
+        }
+      
+    },
+    onClickLastPage() {
+      this.$emit('pagechanged', this.totalPages);    
+    },
+    isPageActive(page) {
+      return this.currentPage === page;
+    },
+  }
+ };
+       var vm = new Vue({
+        el: '#app',
+        components: {
+    pagination: Pagination,
+  },
+        data:{
+            totalPages:null,
+            currentPage: 1,
+          selected_genre: null,
+          opened: [],
+          genres: null,
+          seen: false,
+          books: [],
+          user_name:"",movie_description:"", movie_genre:"",movie_image:"", movie_name:"", opened: [], 
+          filters: ["Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"],
+        artist: null,
+        song: null,
+        genre: null,
+        username: null,
+        rom : [{
+          brand: 'Post an Awesome movie',
+          visible: false,
+          comment: 'drink1 - comment'
+        },
+        ],
+        seen: false,
+      },
+        created() {
+      this.getBooks();
+      },
+      beforeUpdate() {
+        $('.profile_bottom_expanded').slick('unslick');
+        
+    },
+    updated() {
+        this.$nextTick(function () {
+            $('.profile_bottom_expanded').not('.slick-initialized').slick({
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        arrows: true,
+        prevArrow: '<i class="fa fa-arrow-left"></i>',
+        nextArrow: '<i class="fa fa-arrow-right"></i>',
+        button: false,
+        speed: 3000,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 481,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 321,
+                settings: {
+                    slidesToShow: 1,
+                }
+    },
+            {
+                breakpoint: 769,
+                settings: {
+                    slidesToShow: 2,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
+                }
+    }
+
+  ]
+    });
+    setTimeout(()=>document.querySelectorAll(".faq.active").forEach(a=>a.setAttribute("class","faq")),2000)
+        });
+    },
+      
+        mounted(){
+        setTimeout(()=> this.genres = ["All","Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"], 0)
+      },
+      methods:{
+        onPageChange(page) {
+      console.log(page)
+      this.currentPage = page;
+    },
+        delete_post(movie_id){
+    console.log("delete post clicked");
+      console.log(movie_id);
+      if(confirm("are you sure you want to delete this watchlist?")){
+        axios.post("/delete_post/", {id:movie_id}).then(this.getBooks()
+         
+         );
+      }
+      
+      //this.$router.push('/songs');
+    },
+        async ask_for_recommendation () {
+          console.log(this.movie_name);
+          console.log(this.movie_description);
+          console.log(this.movie_genre);
+          var temp_image = document.getElementById('movie_image').files[0]
+          console.log(this.movie_image);
+          var current_user_id = "{{ current_user.username }}";
+          console.log(current_user_id);
+          const formBody = new FormData()
+          formBody.append("movie_name", this.movie_name);
+          formBody.append("movie_genre", this.movie_genre);
+          formBody.append("movie_description", this.movie_description);
+          if(temp_image){
+            formBody.append("movie_image", temp_image);
+          }else{
+            formBody.append("movie_image", null);
+          }
+          
+          formBody.append("user_name", current_user_id);
+          try{
+            await axios.post("/ask_for_movie_recommendation", formBody)
+            this.getBooks()
+            this.reset()
+            this.currentPage=1
+          }catch(error){
+            if (error.response) {
+            /*
+             * The request was made and the server responded with a
+             * status code that falls out of the range of 2xx
+             */
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+            /*
+             * The request was made but no response was received, `error.request`
+             * is an instance of XMLHttpRequest in the browser and an instance
+             * of http.ClientRequest in Node.js
+             */
+            console.log(error.request);
+        } else {
+            // Something happened in setting up the request and triggered an Error
+            console.log('Error', error.message);
+        }
+        console.log(error.config);
+          }
+      
+    },
+    reset() {
+          this.movie_name = "";
+          this.movie_description = "";
+          this.movie_genre = "";
+          this.movie_image = "";
+            },
+        get_by_genre() {  
+        console.log(this.selected_genre);
+  
+        if (!this.selected_genre) {
+  
+          this.getBooks();
+  
+        }
+        else {
+           axios.get('/get_by_genre',{
+        params : {genre:this.selected_genre}
+    }).then((res) => {
+            this.books = res.data.books;
+            this.totalPages=Math.ceil(this.books.length/5)
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+  
+        }  
+  },
+      getBooks() {
+        const path = '/get_all_movies?user_id={{ current_user.id }}';
+        axios.get(path)
+          .then((res) => {
+              this.books=[]
+            this.books = res.data.books;
+            this.totalPages=Math.ceil(this.books.length/5)
+            console.error(this.books);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error);
+          });
+      },
+      toggle(key) {
+              var vm = this;
+              if (!vm.rom[key].visible) {
+                vm.rom[key].visible = true;
+              } else  {
+                  vm.rom[key].visible = false;
+              }
+            },
+      togglePlus(id) {
+        
+        this.$refs['a'+id][0].setAttribute("class","faq active")
+      
+        
+      },
+      toggleMinus(id) {
+        
+        this.$refs['a'+id][0].setAttribute("class","faq")
+        
+      },
+      },
+  }) 
+    </script>
+  
+</body>
+
+</html>

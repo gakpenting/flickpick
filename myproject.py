@@ -167,12 +167,12 @@ def load_user(user_id):
 @app.route("/")
 def hello():
 	# return 'sqlite:///' + os.path.join(basedir, 'app.db')
-    return render_template('index.html')
+    return render_template('popo/index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:
-		return render_template('_index.html')
+		return render_template('popo/login.html')
 	form = RegistrationForm()
 	if form.validate_on_submit():
 		user = User(username=form.username.data, email=form.email.data)
@@ -180,7 +180,7 @@ def register():
 		db.session.add(user)
 		db.session.commit()
 		flash("Congrats you are registered.")
-		return render_template('index.html')
+		return render_template('popo/index.html')
 	return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET','POST'])
@@ -191,35 +191,31 @@ def login():
         user = User.query.filter_by(email=email).first()
         isValidPassword = user.check_password(password)
         if not isValidPassword:
-            return render_template('index.html')
+             return render_template('popo/index.html')
         login_user(user)
-        return render_template('_index.html')
-    return render_template('index.html')
-# @app.route('/user/<username>')
-# @login_required
-# def user(username):
-# 	user = User.query.filter_by(username=username).first_or_404()
-# 	return render_template('user.html', user=user)
-# @app.route('/explore')
-# @login_required
-# def explore():
-# 	return render_template("_index.html")
+        return render_template('popo/login.html')
+    return render_template('popo/index.html')
+
 @app.route('/user/<username>', methods=['GET'])
 @login_required
-def page2(username):	
+def user(username):	
+	user = User.query.filter_by(username=username).first_or_404()
+	return render_template('popo/user-profile.html', user=user)
+@app.route('/tabi/<username>', methods=['GET'])
+@login_required
+def tabi(username):	
 	user = User.query.filter_by(username=username).first_or_404()
 	return render_template('page-2.html', user=user)
-
 @app.route('/explore', methods=['GET'])
 @login_required
 def page3():	
-	return render_template('page-3.html')
+	return render_template('popo/login.html')
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return render_template('index.html')
+    return render_template('popo/index.html')
 
 
 
@@ -309,9 +305,9 @@ def get_update_movies(user):
 @app.route('/get_all_movies', methods=['GET'])
 def get_all_movies():
 	response_object = {'status': 'success'}
-	movi = Movie.query.all()
+	movi = Movie.query.order_by(Movie.id.desc()).all()
 	if request.args.get("user_id"):
-		movi=Movie.query.filter_by(user_id=request.args.get("user_id"))
+		movi=Movie.query.order_by(Movie.id.desc()).filter_by(user_id=request.args.get("user_id"))
 	rec = User.query.all()
 	rr = Recommendation.query.all()
 	movie_schema = MovieSchema(many=True)
