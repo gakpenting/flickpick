@@ -82,13 +82,14 @@ class Recommendation(db.Model):
   recommender_id = db.Column(db.String(255),default="no url found")
   movie_title = db.Column(db.String(255))
   description = db.Column(db.Text)
+  recommended = db.Column(db.Boolean, default=False)
   accepted = db.Column(db.Boolean, default=False)
 
 
 class RecommendationSchema(ma.ModelSchema):
     class Meta:
         model = Recommendation
-        fields = ('id','movie_title','recommended_by','recommender_id','description','accepted')
+        fields = ('id','movie_title','recommended_by','recommender_id','description','accepted','recommended')
 
 class Movie(db.Model):
 	__searchable__ = ['genre']
@@ -260,6 +261,7 @@ def accept_recommendation():
 	rec_id = data['id']
 	rec=Recommendation.query.filter_by(id=rec_id).first() 
 	rec.accepted = True
+	rec.recommended = True
 	db.session.commit()
 	return "accepted"
 
@@ -277,6 +279,7 @@ def reject_recommendation():
 	data = request.get_json()
 	_id = data['id']
 	rec=Recommendation.query.filter_by(id=_id).first()
+	rec.recommended=True
 	db.session.delete(rec)
 	db.session.commit()
 	return "deleted"

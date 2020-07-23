@@ -22,13 +22,13 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="logo">
-                                <img src="/static/assets/images/logo-new.png" alt="logo" class="img-fluid">
+                            <div class="logo" >
+                              <a href="/"><img  src="/static/assets/images/logo-new.png" alt="logo" class="img-fluid"></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="menu_left">
-                                <a href="#">EXPLORE</a>
+                                <a href="/explore">EXPLORE</a>
                                 <button class="btn btn-danger login_page_user"><i class="far fa-user"></i></button>&nbsp;&nbsp;<span><i class="fas fa-angle-down"></i></span>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="carousel-item" style="background-image: url('/static/assets/images/banner_image.png');">
                         <div class="carousel-container">
                             <div class="carousel-content container">
-                                <h2 class="animated fadeInDown">Hey, {{current_user.username}}John</h2>
+                                <h2 class="animated fadeInDown">Hey, {{current_user.username}}</h2>
                                 {% raw %}
                                 <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
                                     <div class="d-flex justify-content-center post_btn">
@@ -97,7 +97,7 @@
                         <div class="carousel-container">
                             <div class="carousel-container">
                                 <div class="carousel-content container">
-                                    <h2 class="animated fadeInDown">Hey, {{current_user.username}}John</h2>
+                                    <h2 class="animated fadeInDown">Hey, {{current_user.username}}</h2>
                                     {% raw %}
                                     <div class="list col-12 mt-3" v-for="(drinks, index) in rom">
                                         <div class="d-flex justify-content-center post_btn">
@@ -192,8 +192,14 @@
                                         <div class="star"><i class="fa fa-star"></i></div>
                                         <h5>{% raw %}{{b.movie_title}}{% endraw %}</h5>
                                         <p>{% raw %}{{b.description}}{% endraw %}</p>
+                                        <div class="reject_accept" v-if="!b.recommended && !b.accepted">
+                                          <span class="grey" @click="rejectRecom(b.id)">REJECT</span>
+                                          <span class="grey" @click="rejectRecom(b.id)"><i class="fa fa-times"></i></span>
+                                          <span class="red" @click="acceptRecom(b.id)">ACCEPT</span>
+                                          <span class="red" @click="acceptRecom(b.id)"><i class="fa fa-check"></i></span>
+                                      </div>
                                     </div>
-                                    
+                                   
 
                                 </div>
                                 <div class="rcmd replies" style="color:#000;">
@@ -550,6 +556,28 @@ console.log(this.startPage)
       console.log(movie_id);
       if(confirm("are you sure you want to delete this watchlist?")){
         axios.post("/delete_post/", {id:movie_id}).then(this.getBooks()
+         
+         );
+      }
+      
+      //this.$router.push('/songs');
+    },
+    acceptRecom(movie_id){
+    console.log("accept clicked");
+      console.log(movie_id);
+      if(confirm("are you sure you want to accept this recommendation?")){
+        axios.post("/accept_recommendation/", {id:movie_id}).then(this.getBooks()
+         
+         );
+      }
+      
+      //this.$router.push('/songs');
+    },
+    rejectRecom(movie_id){
+    console.log("reject clicked");
+      console.log(movie_id);
+      if(confirm("are you sure you want to reject this recommendation?")){
+        axios.post("/reject_recommendation/", {id:movie_id}).then(this.getBooks()
          
          );
       }
