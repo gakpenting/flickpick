@@ -29,7 +29,7 @@
                         <div class="col-lg-6">
                             <div class="menu_left">
                                 <a href="{{ url_for('user', username=current_user.username) }}">MY WATCHLIST</a>
-                                <button class="btn btn-danger login_page_user"><i class="far fa-user"></i></button>&nbsp;&nbsp;<span><i class="fas fa-angle-down"></i></span>
+                                <button class="btn btn-danger login_page_user"><i class="far fa-user"></i></button>&nbsp;&nbsp;<a href="{{ url_for('logout') }}"><span><i class="fas fa-sign-out-alt"></i></span></a>
                             </div>
                         </div>
                     </div>
