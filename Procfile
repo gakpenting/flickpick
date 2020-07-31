@@ -1,1 +1,1 @@
-web: gunicorn myproject --log-file -
+web: python myproject
