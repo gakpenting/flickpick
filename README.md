@@ -1,4 +1,4 @@
-live
+live https://flickpicktest.herokuapp.com/
 
 - install python 3
 - run command
