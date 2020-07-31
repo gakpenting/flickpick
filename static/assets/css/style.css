@@ -416,7 +416,7 @@ faqs-container {
     display: block;
 }
 .faq.active .movie_double_slider{
-    display: block;
+    display:block;
 }
 .faq-toggle {
     background-color: transparent;

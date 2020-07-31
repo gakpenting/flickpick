@@ -18,6 +18,7 @@
         <div class="col-lg-4 col-sm-12  ">
             <form action="" method="post">
                 {{ form.hidden_tag() }}
+                {{ error }}
                 <div class="form-group">
                     {{ form.username(size=32,placeholder="username",class="form-control") }}<br>
                     {% for error in form.username.errors %}

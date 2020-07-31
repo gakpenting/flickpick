@@ -212,7 +212,7 @@
                         </h3>
 
                         <div class="faqs-container">
-                            <div class="faq active" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
+                            <div class="faq" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
                                 <div class="movie_image">
                                     <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
                                 </div>
@@ -223,30 +223,6 @@
                                 <div class="faq-texts">
                                     <p>Curated by<a href="#">{% raw %}{{a.username}}{% endraw %}</a></p>
                                 </div>
-   <div class="movie_double_slider">
-    <div class="faq-text" v-for="b in a.recommendation" v-if="b.accepted" >
-        <div class="card mb-3" style="max-width: 340px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{% raw %}{{b.movie_title}}{% endraw %}</h5>
-                        <h6 class="card-text">{% raw %}{{b.description}}{% endraw %}</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="end">
-            <p>Curated by<a href="#">{% raw %}{{b.recommended_by}}{% endraw %}</a></p>
-        </div>
-    </div>
-   </div>
- 
-
-
-                               
                                 <div class="rcmd">
                                     <span>RECOMMENDATIONS</span>
                                 </div>
@@ -255,6 +231,15 @@
                                     <i class="fas fa-plus" @click="togglePlus(index)"></i>
                                     <i class="fas fa-minus" @click="toggleMinus(index)"></i>
                                 </button>
+   <slider 
+   :a="a"
+ 
+   />
+ 
+
+
+                               
+                                
                             </div>
 
                          
@@ -411,6 +396,110 @@
         
        </script>
     <script >
+        Vue.component('slider', {
+  template: `
+ 
+    <div class="movie_double_slider" >
+    <div class="faq-text" v-for="b in a.recommendation" v-if="b.accepted" >
+        <div class="card mb-3" style="max-width: 340px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{% raw %}{{b.movie_title}}{% endraw %}</h5>
+                        <h6 class="card-text">{% raw %}{{b.description}}{% endraw %}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="end">
+            <p>Curated by<a href="#">{% raw %}{{b.recommended_by}}{% endraw %}</a></p>
+        </div>
+    </div>
+   </div>
+   
+  
+  
+  `,
+  props: ['a'],
+  data () {
+    return {
+     
+    };
+  },
+  methods: {
+    togglePlus(indexx){
+        this.$emit("togglep",indexx)
+    },
+    toggleMinus(indexx){
+        this.$emit("togglem",indexx)
+    },
+    initSlider() {
+        console.log("a")
+        $(this.$el).slick({
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        arrows: true,
+        prevArrow: '<i class="fa fa-arrow-left"></i>',
+        nextArrow: '<i class="fa fa-arrow-right"></i>',
+        button: false,
+        speed: 3000,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 481,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 321,
+                settings: {
+                    slidesToShow: 1,
+                }
+    },
+            {
+                breakpoint: 769,
+                settings: {
+                    slidesToShow: 2,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
+                }
+    }
+
+  ]
+    })
+      
+    },
+    destroySlider() {
+      $(this.$el).slick('unslick');
+    }
+  },
+  mounted () {
+    this.initSlider();
+  },
+  watch: {
+    slides() {
+      this.destroySlider();
+      Vue.nextTick( () => {
+        this.initSlider();  
+      });      
+    }
+  }
+});
+
         const Pagination = {
   name: 'pagination',
   template: '#pagination',
@@ -511,7 +600,7 @@ console.log(this.startPage)
     pagination: Pagination,
   },
         data:{
-            totalPages:null,
+            totalPages:0,
             currentPage: 1,
           selected_genre: null,
           opened: [],
@@ -524,57 +613,54 @@ console.log(this.startPage)
         created() {
       this.getBooks();
       },
-      beforeUpdate() {
-        $('.movie_double_slider').slick('unslick');
-        
-    },
+      
     updated() {
-        this.$nextTick(function () {
-            $('.movie_double_slider').not('.slick-initialized').slick({
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2500,
-        arrows: true,
-        prevArrow: '<i class="fa fa-arrow-left"></i>',
-        nextArrow: '<i class="fa fa-arrow-right"></i>',
-        button: false,
-        speed: 3000,
-        dots: true,
-        responsive: [
-            {
-                breakpoint: 481,
-                settings: {
-                    slidesToShow: 1,
-                    centerMode: false,
-                    centerPadding: 0,
-                }
-    },
-            {
-                breakpoint: 321,
-                settings: {
-                    slidesToShow: 1,
-                }
-    },
-            {
-                breakpoint: 769,
-                settings: {
-                    slidesToShow: 2,
-                    centerMode: false,
-                    centerPadding: 0,
-                }
-    },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                }
-    }
+//         this.$nextTick(function () {
+            
+//             $('.movie_double_slider').not('.slick-initialized').slick({
+//         slidesToShow: 2,
+//         slidesToScroll: 1,
+//         autoplay: true,
+//         autoplaySpeed: 2500,
+//         arrows: true,
+//         prevArrow: '<i class="fa fa-arrow-left"></i>',
+//         nextArrow: '<i class="fa fa-arrow-right"></i>',
+//         button: false,
+//         speed: 3000,
+//         dots: true,
+//         responsive: [
+//             {
+//                 breakpoint: 481,
+//                 settings: {
+//                     slidesToShow: 1,
+//                     centerMode: false,
+//                     centerPadding: 0,
+//                 }
+//     },
+//             {
+//                 breakpoint: 321,
+//                 settings: {
+//                     slidesToShow: 1,
+//                 }
+//     },
+//             {
+//                 breakpoint: 769,
+//                 settings: {
+//                     slidesToShow: 2,
+//                     centerMode: false,
+//                     centerPadding: 0,
+//                 }
+//     },
+//             {
+//                 breakpoint: 992,
+//                 settings: {
+//                     slidesToShow: 2,
+//                 }
+//     }
 
-  ]
-    });
-    setTimeout(()=>document.querySelectorAll(".faq.active").forEach(a=>a.setAttribute("class","faq")),2000)
-        });
+//   ]
+//     });  
+//         });
     },
         mounted(){
             var heroCarousel = $("#heroCarousel");
@@ -709,7 +795,8 @@ console.log(this.startPage)
       },
       togglePlus(id) {
         this.$refs['a'+id][0].setAttribute("class","faq active")
-      
+                $('.movie_double_slider').get(id).slick.setPosition()
+        
         
       },
       toggleMinus(id) {

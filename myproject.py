@@ -176,13 +176,16 @@ def register():
 		return render_template('popo/login.html')
 	form = RegistrationForm()
 	if form.validate_on_submit():
-		user = User(username=form.username.data, email=form.email.data)
-		user.set_password(form.password.data)
-		db.session.add(user)
-		db.session.commit()
-		flash("Congrats you are registered.")
-		return render_template('popo/index.html')
-	return render_template('register.html', form=form)
+		try:
+			user = User(username=form.username.data, email=form.email.data)
+			user.set_password(form.password.data)
+			db.session.add(user)
+			db.session.commit()
+			flash("Congrats you are registered.")
+			return render_template('popo/index.html')
+		except:
+			return render_template('register.html', form=form,error="username or email already been used please use another")		
+	return render_template('register.html', form=form,error="")
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -194,7 +197,7 @@ def login():
             return render_template('popo/index.html',errorUser="wrong username or password")
         isValidPassword = user.check_password(password)
         if not isValidPassword:
-             return render_template('popo/index.html')
+             return render_template('popo/index.html',errorUser="wrong password")
         login_user(user)
         return render_template('popo/login.html')
     return render_template('popo/index.html')
@@ -240,12 +243,12 @@ def ask_for_movie_recommendation():
 	mn = post_data['movie_name']
 	md = post_data['movie_description']
 	mm = None
-	if request.files:
-		mm = request.files['movie_image']
-	imagename=None
-	if mm:
-		imagename = secure_filename(mm.filename)
-		mm.save(os.path.join(app.config['UPLOAD_FOLDER'], imagename))	
+	# if request.files:
+	# 	mm = request.files['movie_image']
+	imagename=post_data['movie_image']
+	# if mm:
+	# 	imagename = secure_filename(mm.filename)
+	# 	mm.save(os.path.join(app.config['UPLOAD_FOLDER'], imagename))	
 	ui = post_data['user_name']
 	user = User.query.filter_by(username=ui).first()
 	post = Movie(name=mn, description=md, genre=mg, image=imagename, user_id=user.id, username=ui)

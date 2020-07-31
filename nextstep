@@ -1,0 +1,11 @@
+1) Instead of manually uploading the movies image and saving it from the db, each movie image should be accurately gotten from the tmdb api -> https://developers.themoviedb.org/3  and saved in the database, so that each movie and post has its correct corresponding movie image. 
+
+Example when I type in "Once Upon a Time in Hollywood"
+
+ this should be automatically saved as the image (at the appropriate scale for the design of course).
+
+Each movie should have the correct image from tmdb - And if one is not found for some odd reason it must be error handled correctly. 
+
+2)The instagram posts at the top should all be coming from this https://www.instagram.com/flickpikcom/ 
+
+3) There are some bugs, when the page loads, for a moment it shows the opened toggled posts, before closing and acting normal. This should not happen. 
