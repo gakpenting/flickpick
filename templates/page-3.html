@@ -98,7 +98,7 @@ Explore <select @change="get_by_genre" v-model="selected_genre"  id="movie_genre
                         <div class="faqs-container">
                             <div class="faq" :ref="'a'+index" v-for="(a,index) in books">
                                 <div class="movie_image">
-                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                    <img :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
                                 </div>
                                 <h3 class="faq-title">
                                     {% raw %}{{a.name}}{% endraw %}

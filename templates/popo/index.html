@@ -214,7 +214,7 @@
                         <div class="faqs-container">
                             <div class="faq" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
                                 <div class="movie_image">
-                                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                    <img :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
                                 </div>
                                 <h3 class="faq-title">
                                     {% raw %}{{a.name}}{% endraw %}
@@ -404,7 +404,7 @@
         <div class="card mb-3" style="max-width: 340px;">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img :src="a.image?'/static/uploads/'+a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
+                    <img :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
