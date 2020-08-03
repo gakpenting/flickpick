@@ -308,8 +308,8 @@ ol {
 }
 
 .movie_image img {
-    width: 100px;
-    height: 120px;
+    width: 70px;
+    height: 105px;
 
 
 }
@@ -326,7 +326,7 @@ faqs-container {
     overflow: hidden;
     margin: 20px 0;
     transition: 0.3s ease;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);

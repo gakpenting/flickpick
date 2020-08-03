@@ -16,6 +16,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import uuid
 import json
+import requests
 
 
 # from tmdbv3api import TMDB
@@ -84,12 +85,13 @@ class Recommendation(db.Model):
   description = db.Column(db.Text)
   recommended = db.Column(db.Boolean, default=False)
   accepted = db.Column(db.Boolean, default=False)
+  image = db.Column(db.Text)
 
 
 class RecommendationSchema(ma.ModelSchema):
     class Meta:
         model = Recommendation
-        fields = ('id','movie_title','recommended_by','recommender_id','description','accepted','recommended')
+        fields = ('id','movie_title','recommended_by','recommender_id','description','accepted','recommended','image')
 
 class Movie(db.Model):
 	__searchable__ = ['genre']
@@ -207,11 +209,14 @@ def login():
 def user(username):	
 	user = User.query.filter_by(username=username).first_or_404()
 	return render_template('popo/user-profile.html', user=user)
-@app.route('/tabi/<username>', methods=['GET'])
-@login_required
-def tabi(username):	
-	user = User.query.filter_by(username=username).first_or_404()
-	return render_template('page-2.html', user=user)
+# IGQVJYekxxbmJXMFAySHpWWWluUUNkU24zUXlQNTZAGTHR5b2JPdG5ITVdyVXIxNm1OVVBEWGgtb09FLUVNYVl2aGVtRGt4Mkdpbl9XRklTcEJIRHdLa0h2ckFVMER0S3h6c1lVODNQZADJzZADJabkJveQZDZD
+@app.route('/instagram', methods=['GET'])
+def instagram():	
+	token="IGQVJYekxxbmJXMFAySHpWWWluUUNkU24zUXlQNTZAGTHR5b2JPdG5ITVdyVXIxNm1OVVBEWGgtb09FLUVNYVl2aGVtRGt4Mkdpbl9XRklTcEJIRHdLa0h2ckFVMER0S3h6c1lVODNQZADJzZADJabkJveQZDZD"
+	# link2="https://graph.instagram.com/me?fields=id,username&access_token="+token
+	link="https://graph.instagram.com/me/media?fields=permalink,media_url&access_token="+token
+	r = requests.get(link, timeout=15)
+	return r.json()
 @app.route('/explore', methods=['GET'])
 @login_required
 def page3():	
@@ -340,10 +345,11 @@ def recommend_movie():
 	movie_id = param['movie_id']
 	recommended_by = param['recommender_name']
 	movie_title = param['movie_recommendation']
-	description = param['movie_description']
+	description = param['movie_description'] if param['movie_description'] else ""
+	image = param['image'] if param["image"] else None
 	user_id = User.query.filter_by(username=recommended_by).first()
 	movie=Movie.query.get(movie_id)
-	rec=Recommendation(movie_id=movie_id,recommended_by=recommended_by,recommender_id=user_id.id,movie_title=movie_title,description=description)
+	rec=Recommendation(movie_id=movie_id,recommended_by=recommended_by,recommender_id=user_id.id,movie_title=movie_title,description=description,image=image)
 	movie.recommendation.append(rec)
 	db.session.add(movie)
 	db.session.commit()

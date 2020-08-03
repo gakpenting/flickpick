@@ -110,63 +110,7 @@
 
     <section id="instagram_part">
         <div class="container">
-            <div class="row insta_slider">
-
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p2.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p3.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p4.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p5.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="insta_picture">
-                        <img src="/static/assets/images/p1.png" alt="p1" class="img-fluid" width="100%">
-                        <div class="overlay">
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <p><a href="#">See More</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <instaslider :instagram="instagram" />
         </div>
     </section>
 
@@ -214,7 +158,7 @@
                         <div class="faqs-container">
                             <div class="faq" :ref="'a'+index" v-for="(a,index) in books.slice((currentPage - 1) * 5, currentPage * 5)">
                                 <div class="movie_image">
-                                    <img :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
+                                    <img width="70" height="105" :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="">
                                 </div>
                                 <h3 class="faq-title">
                                     {% raw %}{{a.name}}{% endraw %}
@@ -396,6 +340,91 @@
         
        </script>
     <script >
+              Vue.component('instaslider', {
+  template: `
+  <div class="row insta_slider">
+
+<div class="col-lg-2" v-for="insta in instagram">
+    <div class="insta_picture">
+        <img :src="insta.media_url" alt="p1" class="img-fluid" style="object-fit: cover;height:200px;width:100%;" >
+        <div class="overlay">
+            <a target="_blank" :href="insta.permalink"><i class="fab fa-instagram"></i></a>
+            <p><a target="_blank" :href="insta.permalink">See More</a></p>
+        </div>
+    </div>
+</div>
+
+</div>
+  `,
+  props: ['instagram'],
+  data () {
+    return {
+     
+    };
+  },
+  methods: {
+   
+    initSlider() {
+        
+        $(this.$el).slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        arrows: false,
+        button: false,
+        speed: 2000,
+        dots: false,
+        responsive: [
+            {
+                breakpoint: 481,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 321,
+                settings: {
+                    slidesToShow: 1,
+                }
+    },
+            {
+                breakpoint: 769,
+                settings: {
+                    slidesToShow: 2,
+                    centerMode: false,
+                    centerPadding: 0,
+                }
+    },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
+                }
+    }
+
+  ]
+    });
+      
+    },
+    destroySlider() {
+      $(this.$el).slick('unslick');
+    }
+  },
+  mounted () {
+    this.initSlider();
+  },
+  watch: {
+    instagram() {
+      this.destroySlider();
+      Vue.nextTick( () => {
+        this.initSlider();  
+      });      
+    }
+  }
+});
         Vue.component('slider', {
   template: `
  
@@ -404,7 +433,7 @@
         <div class="card mb-3" style="max-width: 340px;">
             <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img :src="a.image?a.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
+                    <img :src="b.image?b.image:'/static/images/No_image_available.svg'" class="img-fluid" alt="r1">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -608,61 +637,20 @@ console.log(this.startPage)
           seen: false,
           books: [],
           filters: ["Action","Adventure","Anime","Animation","Bollywood","Comedy","Christian","Drama","Documentary","Family","Foreign","Thriller","Horror","Musical","Nollywood","Romance","Romantic Comedy","Sci-Fi/Fantasy","Short Films","Sports","TV/Streaming","War","Western","Crime","Noir","Blaxploitation","French"],
-          
+          instagram:[],
       },
         created() {
       this.getBooks();
       },
       
     updated() {
-//         this.$nextTick(function () {
-            
-//             $('.movie_double_slider').not('.slick-initialized').slick({
-//         slidesToShow: 2,
-//         slidesToScroll: 1,
-//         autoplay: true,
-//         autoplaySpeed: 2500,
-//         arrows: true,
-//         prevArrow: '<i class="fa fa-arrow-left"></i>',
-//         nextArrow: '<i class="fa fa-arrow-right"></i>',
-//         button: false,
-//         speed: 3000,
-//         dots: true,
-//         responsive: [
-//             {
-//                 breakpoint: 481,
-//                 settings: {
-//                     slidesToShow: 1,
-//                     centerMode: false,
-//                     centerPadding: 0,
-//                 }
-//     },
-//             {
-//                 breakpoint: 321,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//     },
-//             {
-//                 breakpoint: 769,
-//                 settings: {
-//                     slidesToShow: 2,
-//                     centerMode: false,
-//                     centerPadding: 0,
-//                 }
-//     },
-//             {
-//                 breakpoint: 992,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//     }
-
-//   ]
-//     });  
-//         });
+       
     },
         mounted(){
+            let me=this
+            const insta=axios.get("/instagram").then(a=>{
+                me.instagram=a.data.data
+            })
             var heroCarousel = $("#heroCarousel");
     var heroCarouselIndicators = $("#hero-carousel-indicators");
     heroCarousel.find(".carousel-inner").children(".carousel-item").each(function (index) {
@@ -681,47 +669,7 @@ console.log(this.startPage)
 
     //insta_slider
 
-    $('.insta_slider').slick({
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 1500,
-        arrows: false,
-        button: false,
-        speed: 2000,
-        dots: false,
-        responsive: [
-            {
-                breakpoint: 481,
-                settings: {
-                    slidesToShow: 1,
-                    centerMode: false,
-                    centerPadding: 0,
-                }
-    },
-            {
-                breakpoint: 321,
-                settings: {
-                    slidesToShow: 1,
-                }
-    },
-            {
-                breakpoint: 769,
-                settings: {
-                    slidesToShow: 2,
-                    centerMode: false,
-                    centerPadding: 0,
-                }
-    },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                }
-    }
-
-  ]
-    });
+    
     
         //movie_double_slider
 
