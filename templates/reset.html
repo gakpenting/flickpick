@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+   <link rel="stylesheet" href="/static/assets/css/reset.css">
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="container-center">
+    <center>            
+      <img src="static/images/slogo.png"> 
+    </center>
+   
+    <form method="POST">
+      <h4> Just provide
+        your email<br> and we can do the reset </h4>
+      <formgroup>
+
+        <input type="text" name="email" id="email" placeholder="Email" />
+        <label for="email"></label>
+        <span>enter your email</span><br><br>
+
+        <formgroup>
+
+          <p id="message" style="color: red"></p>
+
+
+
+          <button id="login-btn">Reset Password</button>
+
+
+    </form>
+
+    <p>Did you remember? <a href="">Sign In</a></p>
+  </div>
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $('form').on('submit', function (event) {
+
+        $.ajax({
+          data: {
+            email: $('#email').val()
+          },
+          type: 'POST',
+          url: '/send_pass/'
+        })
+          .done(function (data_new) {
+
+            console.log(data_new);
+
+            $(document).ready(
+              function () {
+                $('#message').text(data_new);
+              }
+            );
+
+
+
+          });
+
+        event.preventDefault();
+
+      });
+
+    });
+
+  </script>
+
+</body>
+ 
+</html>
