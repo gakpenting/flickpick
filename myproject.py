@@ -398,7 +398,10 @@ def send_pass():
         session['token'] = rand_token
         
         print(session['token'])
-        msg.html = render_template('reset_password.html', username=var['email'], link=url_for('reset_password',email=var['email'],token=rand_token))
+        url = 'http://127.0.0.1:5000'+ url_for('reset_password',email=var['email'],token=rand_token)
+        print('url:', url)
+        msg.html = render_template('reset_password.html', username=var['email'], link=url)
+        #msg.html = render_template('reset_password.html', username=var['email'], link=url_for('reset_password',email=var['email'],token=rand_token))
 
         
         mail.send(msg)
@@ -411,7 +414,16 @@ def reset_password():
     
     if session['token'] == token:
         if request.method == 'POST':
-            
+            var={}
+            for i,j in zip(request.form.keys(),request.form.values()):
+                var[i]=j
+            print(var)
+            conn = sqlite3.connect('app.db')
+            cur = conn.cursor()
+            cur.execute('UPDATE user SET password="{}" WHERE email = "{}"'.format(generate_password_hash(var['new_password']), email))
+            # To reset the pass db
+            conn.commit()
+            conn.close()
             # To reset the pass db
             
             return redirect(url_for('clear'))
