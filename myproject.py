@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, make_response, session
+from flask_mail import Mail, Message
 from flask_login import login_user, login_required, logout_user, UserMixin, LoginManager, login_manager, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField, SubmitField
@@ -15,9 +16,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import uuid
+from uuid import uuid4
 import json
 import requests
-
+import sqlite3
+import pandas as pd
 
 # from tmdbv3api import TMDB
 # tmdb = TMDB()
@@ -61,12 +64,25 @@ def setup_schema(Base, session):
 
 app = Flask(__name__)
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
 app.config['SECRET_KEY'] = 'shadowfox'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static','uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+mail= Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'tomasmuller.ab@gmail.com'
+app.config['MAIL_PASSWORD'] = 'admin2642'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+
+mail = Mail(app)
 
 db = SQLAlchemy(app)
 ma = Marshmallow()
@@ -354,6 +370,78 @@ def recommend_movie():
 	db.session.add(movie)
 	db.session.commit()
 	return "recommendation was sent to user"
+
+# Reset links
+
+@app.route('/reset')
+def reset():
+    return render_template('reset.html')
+
+
+@app.route('/send_pass/', methods = ['POST','GET'])
+def send_pass():
+    if request.method =='POST':
+        print("In POst")
+        var={}
+        for i,j in zip(request.form.keys(),request.form.values()):
+            var[i]=j
+        print(var)
+        conn = sqlite3.connect('app.db')
+        cur = conn.cursor()
+        cur.execute('SELECT * from user WHERE email="{}"'.format(var['email']))
+        data = pd.DataFrame(cur.fetchall())
+        if len(data)<1:
+                   return "* Wrong email"
+        msg = Message('Password Reset', sender = 'ticketdropper23@gmail.com', recipients = [var['email']])
+        
+        rand_token = str(uuid4())
+        session['token'] = rand_token
+        
+        print(session['token'])
+        url = 'http://127.0.0.1:5000'+ url_for('reset_password',email=var['email'],token=rand_token)
+        print('url:', url)
+        msg.html = render_template('reset_password.html', username=var['email'], link=url)
+        #msg.html = render_template('reset_password.html', username=var['email'], link=url_for('reset_password',email=var['email'],token=rand_token))
+
+        
+        mail.send(msg)
+        return "Password was sent to your email"
+
+@app.route('/reset_password/', methods=['GET',"POST"])
+def reset_password():
+    email = request.args.get('email')
+    token = request.args.get('token')
+    
+    if session['token'] == token:
+        if request.method == 'POST':
+            var={}
+            for i,j in zip(request.form.keys(),request.form.values()):
+                var[i]=j
+            print(var)
+            conn = sqlite3.connect('app.db')
+            cur = conn.cursor()
+            cur.execute('UPDATE user SET password="{}" WHERE email = "{}"'.format(generate_password_hash(var['new_password']), email))
+            # To reset the pass db
+            conn.commit()
+            conn.close()
+            # To reset the pass db
+            
+            return redirect(url_for('clear'))
+        return render_template('new_password.html')
+@app.route('/clear/')
+def clear():
+    session.clear()
+    try:
+        print('session',session['token'])
+    except:
+        pass
+    return redirect(url_for('hello'))
+
+if __name__=='__main__':
+    app.run(debug=False)
+
+
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
