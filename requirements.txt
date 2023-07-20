@@ -56,7 +56,7 @@ protobuf==3.18.3
 psycopg2==2.8.4
 pycairo==1.16.2
 pycups==1.9.73
-Pygments==2.7.4
+Pygments==2.15.0
 PyJWT==2.4.0
 pymacaroons==0.13.0
 PyMySQL==0.10.0
